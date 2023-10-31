@@ -1,28 +1,45 @@
+import java.time.LocalDate;
+
 public class PessoaJuridica extends Cliente {
-    private int cnpj;
+    private long cnpj;
     private String razaoSocial;
     private int prazoMaximoPagamento;
 
     // TODO corrigir paraString para printar todas as informações do cliente
     public String paraString() {
-        return "PessoaJuridica [cnpj=" + cnpj + ", razaoSocial=" + razaoSocial + ", prazoMaximoPagamento="
-                + prazoMaximoPagamento + "]";
+        return "*PessoaJuridica" +
+                "\nNome: " + super.getNome() +
+                "\nData de Cadastro: " + super.getDataCadastro() +
+                "\nCNPJ: " + cnpj +
+                "\nPrazo máximo para o pagamento: " + prazoMaximoPagamento +
+                "\n" +
+                "\nEndereço" +
+                "\n     CEP: " + getEndereco().getCep() +
+                "\n     Estado: " + getEndereco().getEstado() +
+                "\n     Cidade: " + getEndereco().getCidade() +
+                "\n     Bairro: " + getEndereco().getBairro() +
+                "\n     Rua: " + getEndereco().getRua() +
+                "\n     Número: " + getEndereco().getNumero();
     }
 
     public PessoaJuridica() {
     }
 
-    public PessoaJuridica(int cnpj, String razaoSocial, int prazoMaximoPagamento) {
+    public PessoaJuridica(String nome, Endereco endereco, LocalDate dataCadastro, long cnpj, String razaoSocial,
+            int prazoMaximoPagamento) {
+        super.setNome(nome);
+        super.setEndereco(endereco);
+        super.setDataCadastro(dataCadastro);
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
         this.prazoMaximoPagamento = prazoMaximoPagamento;
     }
 
-    public int getCnpj() {
+    public long getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(int cnpj) {
+    public void setCnpj(long cnpj) {
         this.cnpj = cnpj;
     }
 

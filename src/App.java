@@ -39,6 +39,17 @@ public class App {
                                 quantidadaeMaximaParcelas);
 
                         JOptionPane.showMessageDialog(null, pessoa.paraString());
+                    } else {
+                        String nome = getString("Nome: ");
+                        Long cnpj = getLong("CNPJ: ");
+                        int prazoMaximoPagamento = getInt("Prazo máximo para o pagamento: ");
+                        String razaoSocial = getString("Razão social: ");
+
+                        Endereco endereco = getEndereco();
+                        LocalDate dataCadastro = getData();
+
+                        PessoaJuridica pessoa = new PessoaJuridica(nome, endereco, dataCadastro, cnpj, razaoSocial, prazoMaximoPagamento);
+                        JOptionPane.showMessageDialog(null, pessoa.paraString());
                     }
                 }
             }
