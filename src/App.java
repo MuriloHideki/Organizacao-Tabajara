@@ -11,6 +11,7 @@ public class App {
                 "4 - Cadastro de Produtos",
                 "5 - Efetuação de uma compra",
                 "6 - Atualização da situação de pagamento de uma compra",
+                "7 - Relatórios",
                 "Sair" };
 
         while (true) {
@@ -38,6 +39,32 @@ public class App {
                                 quantidadaeMaximaParcelas);
 
                         JOptionPane.showMessageDialog(null, pessoa.paraString());
+                    }
+                }
+            }
+
+            else if (escolha.equals("7 - Relatórios")) {
+                String[] subOpcoes = {
+                        "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
+                        "(b) Relação de todos os Produtos",
+                        "(c) Busca de um produto pelo nome",
+                        "(d) Relação de produtos que são perecíveis e que estão com a data de validade vencida",
+                        "(e) Relação de todas as compras",
+                        "(f) Busca de uma compra pelo número",
+                        "(g) Relação de todas as compras que não foram pagas ainda",
+                        "(h) Relação das 10 últimas compras pagas",
+                        "(i) Apresentação das informações da compra mais cara",
+                        "(j) Apresentação das informações da compra mais barata",
+                        "(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses",
+                        "Voltar" };
+
+                while (true) {
+                    String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
+                            JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
+
+                    if (subEscolha.equals("Voltar") || subEscolha == null) {
+                        JOptionPane.showMessageDialog(null, "Voltando...");
+                        break;
                     }
                 }
             }
