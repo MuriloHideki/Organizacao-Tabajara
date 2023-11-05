@@ -15,7 +15,7 @@ public class Endereco {
         this.estado = estado;
     }
 
-    // TODO corrigir paraString para printar as informações do endereço mais
+    // TO DO corrigir paraString para printar as informações do endereço mais
     // bonitinho
     public String paraString() {
         return "Endereco [rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cep=" + cep + ", cidade="

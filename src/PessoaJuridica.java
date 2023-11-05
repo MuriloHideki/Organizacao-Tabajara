@@ -5,22 +5,23 @@ public class PessoaJuridica extends Cliente {
     private String razaoSocial;
     private int prazoMaximoPagamento;
 
-    // TODO corrigir paraString para printar todas as informações do cliente
-    public String paraString() {
-        return "*PessoaJuridica" +
-                "\nNome: " + super.getNome() +
-                "\nData de Cadastro: " + super.getDataCadastro() +
-                "\nCNPJ: " + cnpj +
-                "\nPrazo máximo para o pagamento: " + prazoMaximoPagamento +
-                "\n" +
-                "\nEndereço" +
-                "\n     CEP: " + getEndereco().getCep() +
-                "\n     Estado: " + getEndereco().getEstado() +
-                "\n     Cidade: " + getEndereco().getCidade() +
-                "\n     Bairro: " + getEndereco().getBairro() +
-                "\n     Rua: " + getEndereco().getRua() +
-                "\n     Número: " + getEndereco().getNumero();
-    }
+    // Corrigindo o T O D O
+     public String paraString() {
+            return "*Pessoa Jurídica:" +
+                    "\nNome Fantasia: " + super.getNome() +
+                    "\nData de Cadastro: " + super.getDataCadastro() +
+                    "\nCNPJ: " + cnpj +
+                    "\nRazão Social: " + razaoSocial +
+                    "\nPrazo máximo para pagamento: " + prazoMaximoPagamento +
+                    "\n" +
+                    "\nEndereço" +
+                    "\n     CEP: " + getEndereco().getCep() +
+                    "\n     Estado: " + getEndereco().getEstado() +
+                    "\n     Cidade: " + getEndereco().getCidade() +
+                    "\n     Bairro: " + getEndereco().getBairro() +
+                    "\n     Rua: " + getEndereco().getRua() +
+                    "\n     Número: " + getEndereco().getNumero();
+        }
 
     public PessoaJuridica() {
     }

@@ -5,7 +5,7 @@ public class PessoaFisica extends Cliente {
     private int quantidadeMaximaParcelas;
 
     public String paraString() {
-        return "*PessoaFisica" +
+        return "*Pessoa Fisica:" +
                 "\nNome: " + super.getNome() +
                 "\nData de Cadastro: " + super.getDataCadastro() +
                 "\nCPF: " + cpf +

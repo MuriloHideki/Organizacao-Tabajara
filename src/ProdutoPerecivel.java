@@ -1,8 +1,9 @@
 import java.time.LocalDate;
 
 public class ProdutoPerecivel extends Produto {
-    private LocalDate validade;
+   // private LocalDate validade;
 
+    /* 
     public LocalDate getValidade() {
         return validade;
     }
@@ -14,4 +15,5 @@ public class ProdutoPerecivel extends Produto {
     public boolean estaVencido() {
         return validade.isBefore(LocalDate.now());
     }
+    */
 }
