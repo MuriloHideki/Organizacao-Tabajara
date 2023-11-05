@@ -27,9 +27,10 @@ public class App {
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
                 if (tipoEscolhido >= 0) {
                     if (tipoEscolhido == 0) {
-                        String nome = getString("Nome:");
-                        Long cpf = getLong("CPF:");
-                        int quantidadaeMaximaParcelas = getInt("Quantidade máxima de parcelas: ");
+                        String nome = getString("Nome:", "Dados pessoais");
+                        Long cpf = getLong("CPF:", "Dados pessoais");
+                        int quantidadaeMaximaParcelas = getInt("Quantidade máxima de parcelas: ",
+                                "Financeiro");
 
                         Endereco endereco = getEndereco();
 
@@ -40,15 +41,17 @@ public class App {
 
                         JOptionPane.showMessageDialog(null, pessoa.paraString());
                     } else {
-                        String nome = getString("Nome: ");
-                        Long cnpj = getLong("CNPJ: ");
-                        int prazoMaximoPagamento = getInt("Prazo máximo para o pagamento: ");
-                        String razaoSocial = getString("Razão social: ");
+                        String nome = getString("Nome: ", "Dados pessoais");
+                        Long cnpj = getLong("CNPJ: ", "Dados pessoais");
+                        int prazoMaximoPagamento = getInt("Prazo máximo para o pagamento: ",
+                                "Financeiro");
+                        String razaoSocial = getString("Razão social: ", "Dados pessoais");
 
                         Endereco endereco = getEndereco();
                         LocalDate dataCadastro = getData();
 
-                        PessoaJuridica pessoa = new PessoaJuridica(nome, endereco, dataCadastro, cnpj, razaoSocial, prazoMaximoPagamento);
+                        PessoaJuridica pessoa = new PessoaJuridica(nome, endereco, dataCadastro, cnpj, razaoSocial,
+                                prazoMaximoPagamento);
                         JOptionPane.showMessageDialog(null, pessoa.paraString());
                     }
                 }
@@ -82,39 +85,50 @@ public class App {
         }
     }
 
-    private static int getInt(String mensagem) {
-        // TODO melhorar os inputs adicionando titulo
-        return Integer.parseInt(JOptionPane.showInputDialog(mensagem));
+    private static int getInt(String mensagem, String titulo) {
+
+        return Integer.parseInt(JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
     }
 
-    private static Long getLong(String mensagem) {
-        // TODO melhorar os inputs adicionando titulo
-        return Long.parseLong(JOptionPane.showInputDialog(mensagem));
+    private static Long getLong(String mensagem, String titulo) {
+        return Long.parseLong(JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
     }
 
-    private static String getString(String mensagem) {
-        // TODO melhorar os inputs adicionando titulo
-        return JOptionPane.showInputDialog(mensagem);
+    private static String getString(String mensagem, String titulo) {
+        return (JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
     }
 
     private static Endereco getEndereco() {
-        // TODO melhorar os inputs adicionando titulo
+        String titulo = "Endereço";
+
+        String rua = getString("Rua:", titulo);
+        int numero = getInt("Número:", titulo);
+        String bairro = getString("Bairro:", titulo);
+        Long cep = getLong("CEP:", titulo);
+        String cidade = getString("Cidade:", titulo);
+        String estado = getString("Estado:", titulo);
+
+        /*
         String rua = JOptionPane.showInputDialog(null, "Rua:", "Endereço", 1);
-        int numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Número:"));
+        int numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Número:", "Endereço", 1));
         String bairro = JOptionPane.showInputDialog(null, "Bairro:");
         Long cep = Long.parseLong(JOptionPane.showInputDialog(null, "CEP:"));
         String cidade = JOptionPane.showInputDialog(null, "Cidade:");
         String estado = JOptionPane.showInputDialog(null, "Estado:");
+        */
 
         return new Endereco(rua, numero, bairro, cep, cidade, estado);
     }
 
     private static LocalDate getData() {
-        // TODO melhorar os inputs adicionando titulo
-        int dia = Integer.parseInt(JOptionPane.showInputDialog("Dia: "));
-        int mes = Integer.parseInt(JOptionPane.showInputDialog("Mês: "));
-        int ano = Integer.parseInt(JOptionPane.showInputDialog("Ano: "));
+
+        String titulo = "Data atual";
+
+        int dia = getInt("Dia:", titulo);
+        int mes = getInt("Mês:", titulo);
+        int ano = getInt("Ano:", titulo);
 
         return LocalDate.of(ano, mes, dia);
     }
+
 }
