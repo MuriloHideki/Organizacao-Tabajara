@@ -86,12 +86,57 @@ public class App {
     }
 
     private static int getInt(String mensagem, String titulo) {
+        while (true) {
+            try {
+                // Exibe a caixa de diálogo para o usuário inserir um valor do tipo inteiro.
+                String inputStr = JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE);
 
-        return Integer.parseInt(JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
+                // TODO - Implementar um método de retorno ao menu inicial ao clicar em
+                // 'cancel'.
+                if (inputStr == null) {
+                    // Verifica se o usuário clicou em 'cancel'.
+                    JOptionPane.showMessageDialog(null, "Cancelando...");
+                    System.exit(1);
+                }
+
+                // Tenta converter um valor string em um valor do tipo int.
+                int numero = Integer.parseInt(inputStr);
+
+                // Caso a conversão funcione corretamente, retorna um número inteiro.
+                return numero;
+
+            } catch (NumberFormatException entradaInvalida) {
+                // Caso o valor de entrada do usuário for inválido
+                JOptionPane.showMessageDialog(null, "Por favor, digite um valor válido.", "Valor inválido",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private static Long getLong(String mensagem, String titulo) {
-        return Long.parseLong(JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
+        while (true) {
+            try {
+                String inputStr = JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE);
+
+                // TODO - Implementar um método de retorno ao menu inicial ao clicar em
+                // 'cancel'.
+                if (inputStr == null) {
+                    // Verifica se o usuário clicou em 'cancel'.
+                    JOptionPane.showMessageDialog(null, "Cancelando...");
+                    System.exit(1);
+                }
+                // Tenta converter um valor string em um valor do tipo long.
+                long numero = Long.parseLong(inputStr);
+
+                // Caso a conversão funcione corretamente, retorna um número do tipo longint.
+                return numero;
+
+            } catch (NumberFormatException entradaInvalida) {
+                // Caso o valor de entrada do usuário for inválido
+                JOptionPane.showMessageDialog(null, "Por favor, digite um valor válido.", "Valor inválido",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private static String getString(String mensagem, String titulo) {
@@ -109,13 +154,14 @@ public class App {
         String estado = getString("Estado:", titulo);
 
         /*
-        String rua = JOptionPane.showInputDialog(null, "Rua:", "Endereço", 1);
-        int numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Número:", "Endereço", 1));
-        String bairro = JOptionPane.showInputDialog(null, "Bairro:");
-        Long cep = Long.parseLong(JOptionPane.showInputDialog(null, "CEP:"));
-        String cidade = JOptionPane.showInputDialog(null, "Cidade:");
-        String estado = JOptionPane.showInputDialog(null, "Estado:");
-        */
+         * String rua = JOptionPane.showInputDialog(null, "Rua:", "Endereço", 1);
+         * int numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Número:",
+         * "Endereço", 1));
+         * String bairro = JOptionPane.showInputDialog(null, "Bairro:");
+         * Long cep = Long.parseLong(JOptionPane.showInputDialog(null, "CEP:"));
+         * String cidade = JOptionPane.showInputDialog(null, "Cidade:");
+         * String estado = JOptionPane.showInputDialog(null, "Estado:");
+         */
 
         return new Endereco(rua, numero, bairro, cep, cidade, estado);
     }
