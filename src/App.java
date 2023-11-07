@@ -306,18 +306,34 @@ public class App {
             JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
     }
 
-    public static void cadastrarProdutos()
-    {
-            String codigo = getString("Código do produto: ","Dados do Produto");
-            String nome = getString("Nome do produto: ","Dados do Produto");
-            String descricao = getString("Descrição: ", "Dados do Produto");
-            float preco = getFloat("Preço: ", "Dados do Produto");
+    public static void cadastrarProdutos() {
+    String[] tipoProduto = { "Produto Comum", "Produto Perecível" };
+    int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de produto:", "Tipo de Produto",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoProduto, tipoProduto[0]);
 
-            LocalDate dataValidade = getDataValidade();
+    if (tipoEscolhido == 0) {
+        String codigo = getString("Código do produto: ", "Dados do Produto");
+        String nome = getString("Nome do produto: ", "Dados do Produto");
+        String descricao = getString("Descrição: ", "Dados do Produto");
+        float preco = getFloat("Preço: ", "Dados do Produto");
 
-            Produto produto = new Produto(codigo, nome , descricao, preco,dataValidade);
+        Produto produto = new Produto(codigo, nome, descricao, preco); // Produtos comuns não possuem validade
 
-            listProdutos.add(produto);//adicionando produto à lista
-            JOptionPane.showMessageDialog(null, produto.paraString());
+        listProdutos.add(produto);
+        JOptionPane.showMessageDialog(null, produto.paraString());
+    } else {
+        String codigo = getString("Código do produto: ", "Dados do Produto");
+        String nome = getString("Nome do produto: ", "Dados do Produto");
+        String descricao = getString("Descrição: ", "Dados do Produto");
+        float preco = getFloat("Preço: ", "Dados do Produto");
+
+        LocalDate dataValidade = getDataValidade();
+
+        ProdutoPerecivel produtoPerecivel = new ProdutoPerecivel(codigo, nome, descricao, preco, dataValidade);
+
+        listProdutos.add(produtoPerecivel);
+        JOptionPane.showMessageDialog(null, produtoPerecivel.paraString());
     }
+}
+
 }

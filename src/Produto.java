@@ -1,22 +1,17 @@
-import java.time.LocalDate;
-
 public class Produto {
     private String codigo;
     private String nome;
     private String descricao;
     private float preco;
-    private LocalDate validade;
-    private boolean estaVencido;
 
     public Produto() {
     }
 
-    public Produto(String codigo, String nome, String descricao, float preco, LocalDate validade) {
+    public Produto(String codigo, String nome, String descricao, float preco) {
         this.codigo = codigo;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
-        this.validade = validade;
     }
 
     public String paraString() {
@@ -24,8 +19,7 @@ public class Produto {
                     "\nCódigo do produto: " + getCodigo() +
                     "\nNome: " + getNome() +
                     "\nDescrição: " + getDescricao() +
-                    "\nPreço: " + getPreco() +
-                    "\nValidade: " + getValidade();
+                    "\nPreço: " + getPreco();
         }
     
     public String getCodigo() {
@@ -58,19 +52,6 @@ public class Produto {
 
     public void setPreco(float preco) {
         this.preco = preco;
-    }
-
-    //Copiado de ProdutoPerecível
-    public LocalDate getValidade() {
-        return validade;
-    }
-
-    public void setValidade(LocalDate validade) {
-        this.validade = validade;
-    }
-
-    public boolean estaVencido() {
-        return validade.isBefore(LocalDate.now());
     }
 
 }
