@@ -1,0 +1,14 @@
+*Pessoa Fisica:
+Nome: Murilo
+Data de Cadastro: 2023-11-07
+CPF: 48722512888
+Quantidade máxima de parcelas: 12
+
+Endereço
+     CEP: 18085655
+     Estado: SP
+     Cidade: Sorocaba
+     Bairro: Centro
+     Rua: Jose Antonio Furlani
+     Número: 172
+[PessoaFisica@29f69090]

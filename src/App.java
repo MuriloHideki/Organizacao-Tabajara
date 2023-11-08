@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -8,15 +11,23 @@ public class App {
      * @param args
      * @throws Exception
      */
-
-     // Criando uma lista de Clientes
+    
     public static ArrayList<Cliente> listClientes = new ArrayList<Cliente>();
-
-    // Criando uma lista de Produtos
     public static ArrayList<Produto> listProdutos = new ArrayList<Produto>();
 
     public static void main(String[] args) throws Exception {
-        
+
+        File clienteFile = new File("clientes.txt");
+        if (!clienteFile.exists()) 
+            clienteFile.createNewFile();
+        FileWriter clienteWriter = new FileWriter(clienteFile, false);
+        BufferedWriter clienteBufferedWriter = new BufferedWriter(clienteWriter);
+
+        File produtoFile = new File("clientes.txt");
+        if (!produtoFile.exists()) 
+            produtoFile.createNewFile();
+        FileWriter produtoWriter = new FileWriter(produtoFile, false);
+        BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
 
         String[] opcoes = {
                 "1 - Cadastros de Clientes",
@@ -33,21 +44,39 @@ public class App {
                     JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]).toString();
 
             if (escolha.equals("Sair") || escolha == null) {
+
+                for (Cliente cliente : listClientes) {
+                    if (cliente instanceof PessoaFisica) {
+                        PessoaFisica pessoaFisica = (PessoaFisica) cliente;
+                        clienteBufferedWriter.write(pessoaFisica.paraString() + "\n");
+                    } else if (cliente instanceof PessoaJuridica) {
+                        PessoaJuridica pessoaJuridica = (PessoaJuridica) cliente;
+                        clienteBufferedWriter.write(pessoaJuridica.paraString() + "\n");
+                    }
+                }
+                clienteBufferedWriter.close();
+
+                for (Produto produto : listProdutos) {
+                    if (produto instanceof Produto) {
+                        produtoBufferedWriter.write(produto.paraString() + "\n");
+                    } else if (produto instanceof ProdutoPerecivel) {
+                        ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
+                        produtoBufferedWriter.write(produtoPerecivel.paraString() + "\n");
+                    }
+                }
+                produtoBufferedWriter.close();
+
                 JOptionPane.showMessageDialog(null, "Fechando");
                 break;
             } else if (escolha.equals("1 - Cadastros de Clientes")) {
                 CadastrarClientes();
-            }
-            else if (escolha.equals("2 - Deletar cliente pelo CPF ou CNPJ")) {
+            } else if (escolha.equals("2 - Deletar cliente pelo CPF ou CNPJ")) {
                 ExcluirClientePorCPFCNPJ();
-            }
-            else if(escolha.equals("3 - Deletar cliente pelo nome")){
+            } else if (escolha.equals("3 - Deletar cliente pelo nome")) {
                 ExcluirClientePorNome();
-            }
-            else if(escolha.equals("4 - Cadastro de Produtos")){
+            } else if (escolha.equals("4 - Cadastro de Produtos")) {
                 cadastrarProdutos();
-            }
-            else if (escolha.equals("7 - Relatórios")) {
+            } else if (escolha.equals("7 - Relatórios")) {
                 String[] subOpcoes = {
                         "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
                         "(b) Relação de todos os Produtos",
@@ -129,7 +158,7 @@ public class App {
         }
     }
 
-    //Método para converter para float, usado no cadastro de produtos
+    // Método para converter para float, usado no cadastro de produtos
     public static float getFloat(String mensagem, String titulo) {
         while (true) {
             try {
@@ -205,13 +234,13 @@ public class App {
 
         return LocalDate.of(ano, mes, dia);
     }
-    //Organizando as ações do menu em métodos específicos
-    public static void CadastrarClientes()
-    {
-        String[] tipoCliente = {"Pessoa Física", "Pessoa Jurídica"};
+
+    // Organizando as ações do menu em métodos específicos
+    public static void CadastrarClientes() {
+        String[] tipoCliente = { "Pessoa Física", "Pessoa Jurídica" };
         int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de cliente:", "Tipo de Cliente",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
-        
+
         if (tipoEscolhido == 0) {
             String nome = getString("Nome:", "Dados pessoais");
             Long cpf = getLong("CPF:", "Dados pessoais");
@@ -225,7 +254,7 @@ public class App {
             PessoaFisica pessoa = new PessoaFisica(nome, endereco, dataCadastro, cpf,
                     quantidadaeMaximaParcelas);
 
-            listClientes.add(pessoa);//adicionando cliente à lista
+            listClientes.add(pessoa);// adicionando cliente à lista
             JOptionPane.showMessageDialog(null, pessoa.paraString());
         } else {
             String nome = getString("Nome: ", "Dados pessoais");
@@ -239,19 +268,19 @@ public class App {
 
             PessoaJuridica pessoa = new PessoaJuridica(nome, endereco, dataCadastro, cnpj, razaoSocial,
                     prazoMaximoPagamento);
-            listClientes.add(pessoa);//adicionando cliente à lista
+            listClientes.add(pessoa);// adicionando cliente à lista
             JOptionPane.showMessageDialog(null, pessoa.paraString());
         }
     }
 
-    public static void ExcluirClientePorCPFCNPJ()
-    {
+    public static void ExcluirClientePorCPFCNPJ() {
         String[] tipoCliente = { "Pessoa Física", "Pessoa Jurídica" };
         int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de cliente:", "Tipo de Cliente",
-        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
         if (tipoEscolhido == 0) {
-            long cpf = getLong("CPF:","Dados pessoais");
-            // Criando variável boolean como false, para que quando encontrar cliente alterar para true
+            long cpf = getLong("CPF:", "Dados pessoais");
+            // Criando variável boolean como false, para que quando encontrar cliente
+            // alterar para true
             boolean blnEncontrou = false;
             for (Cliente cliente : listClientes) {
                 // Verifica se o cliente é do tipo PessoaFisica e se o CPF corresponde
@@ -264,11 +293,10 @@ public class App {
                 }
             }
             // Se não encontrou o cliente, exibe mensagem ao usuário
-            if(!blnEncontrou)
+            if (!blnEncontrou)
                 JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
-        }
-        else{
-            long cnpj = getLong("CNPJ:","Dados pessoais");
+        } else {
+            long cnpj = getLong("CNPJ:", "Dados pessoais");
             boolean blnEncontrou = false;
             for (Cliente cliente : listClientes) {
                 // Verifica se o cliente é do tipo PessoaFisica e se o CPF corresponde
@@ -281,19 +309,18 @@ public class App {
                 }
             }
 
-            if(!blnEncontrou)
+            if (!blnEncontrou)
                 JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
         }
     }
 
-    public static void ExcluirClientePorNome()
-    {
+    public static void ExcluirClientePorNome() {
         String nome = getString("Nome: ", "Dados pessoais");
         boolean blnEncontrou = false;
         for (Cliente cliente : listClientes) {
             // Verifica se o cliente é do tipo PessoaFisica e se o nome corresponde
             if ((cliente instanceof PessoaFisica && ((PessoaFisica) cliente).getNome().equals(nome)) ||
-            (cliente instanceof PessoaJuridica && ((PessoaJuridica) cliente).getNome().equals(nome))) {
+                    (cliente instanceof PessoaJuridica && ((PessoaJuridica) cliente).getNome().equals(nome))) {
                 // Remove o cliente da lista
                 listClientes.remove(cliente);
                 blnEncontrou = true;
@@ -302,38 +329,38 @@ public class App {
             }
         }
         // Se não encontrou o cliente, exibe mensagem ao usuário
-        if(!blnEncontrou)
+        if (!blnEncontrou)
             JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
     }
 
     public static void cadastrarProdutos() {
-    String[] tipoProduto = { "Produto Comum", "Produto Perecível" };
-    int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de produto:", "Tipo de Produto",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoProduto, tipoProduto[0]);
+        String[] tipoProduto = { "Produto Comum", "Produto Perecível" };
+        int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de produto:", "Tipo de Produto",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoProduto, tipoProduto[0]);
 
-    if (tipoEscolhido == 0) {
-        String codigo = getString("Código do produto: ", "Dados do Produto");
-        String nome = getString("Nome do produto: ", "Dados do Produto");
-        String descricao = getString("Descrição: ", "Dados do Produto");
-        float preco = getFloat("Preço: ", "Dados do Produto");
+        if (tipoEscolhido == 0) {
+            String codigo = getString("Código do produto: ", "Dados do Produto");
+            String nome = getString("Nome do produto: ", "Dados do Produto");
+            String descricao = getString("Descrição: ", "Dados do Produto");
+            float preco = getFloat("Preço: ", "Dados do Produto");
 
-        Produto produto = new Produto(codigo, nome, descricao, preco); // Produtos comuns não possuem validade
+            Produto produto = new Produto(codigo, nome, descricao, preco); // Produtos comuns não possuem validade
 
-        listProdutos.add(produto);
-        JOptionPane.showMessageDialog(null, produto.paraString());
-    } else {
-        String codigo = getString("Código do produto: ", "Dados do Produto");
-        String nome = getString("Nome do produto: ", "Dados do Produto");
-        String descricao = getString("Descrição: ", "Dados do Produto");
-        float preco = getFloat("Preço: ", "Dados do Produto");
+            listProdutos.add(produto);
+            JOptionPane.showMessageDialog(null, produto.paraString());
+        } else {
+            String codigo = getString("Código do produto: ", "Dados do Produto");
+            String nome = getString("Nome do produto: ", "Dados do Produto");
+            String descricao = getString("Descrição: ", "Dados do Produto");
+            float preco = getFloat("Preço: ", "Dados do Produto");
 
-        LocalDate dataValidade = getDataValidade();
+            LocalDate dataValidade = getDataValidade();
 
-        ProdutoPerecivel produtoPerecivel = new ProdutoPerecivel(codigo, nome, descricao, preco, dataValidade);
+            ProdutoPerecivel produtoPerecivel = new ProdutoPerecivel(codigo, nome, descricao, preco, dataValidade);
 
-        listProdutos.add(produtoPerecivel);
-        JOptionPane.showMessageDialog(null, produtoPerecivel.paraString());
+            listProdutos.add(produtoPerecivel);
+            JOptionPane.showMessageDialog(null, produtoPerecivel.paraString());
+        }
     }
-}
 
 }
