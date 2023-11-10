@@ -5,6 +5,8 @@ public class PessoaFisica extends Cliente {
     private int quantidadeMaximaParcelas;
 
     public String paraString() {
+        return super.getNome() + "," + super.getEndereco().getCep() + "," + super.getEndereco().getBairro() + "," + super.getEndereco().getCidade() + "," + super.getEndereco().getEstado() + "," + super.getEndereco().getNumero() + "," + super.getEndereco().getRua() + "," + super.getDataCadastro() + "," + getCpf() + "," + getQuantidadeMaximaParcelas();
+        /*
         return "*Pessoa Fisica:" +
                 "\nNome: " + super.getNome() +
                 "\nData de Cadastro: " + super.getDataCadastro() +
@@ -18,6 +20,7 @@ public class PessoaFisica extends Cliente {
                 "\n     Bairro: " + getEndereco().getBairro() +
                 "\n     Rua: " + getEndereco().getRua() +
                 "\n     Número: " + getEndereco().getNumero();
+        */
     }
 
     public PessoaFisica() {

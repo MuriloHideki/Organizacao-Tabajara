@@ -1,13 +1,2 @@
-*Pessoa Fisica:
-Nome: Eu
-Data de Cadastro: 2023-11-08
-CPF: 84684
-Quantidade máxima de parcelas: 8
-
-Endereço
-     CEP: 1231
-     Estado: we
-     Cidade: asda
-     Bairro: sds
-     Rua: rua
-     Número: 23
+Nome 01,1001000,Centro,Sorocaba,SP,1,Rua,2023-11-09,11111111111,12
+Nome 2,1001000,Centro,Sorocaba,SP,2,Rua,2023-11-09,22222222222,12

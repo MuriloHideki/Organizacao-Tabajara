@@ -1,6 +1,9 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -11,23 +14,57 @@ public class App {
      * @param args
      * @throws Exception
      */
-    
+
     public static ArrayList<Cliente> listClientes = new ArrayList<Cliente>();
     public static ArrayList<Produto> listProdutos = new ArrayList<Produto>();
 
     public static void main(String[] args) throws Exception {
 
+        //Leitura do documento clientes.txt
+        try (BufferedReader br = new BufferedReader(new FileReader("clientes.txt"))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] campos = linha.split(",");
+                if (campos.length == 10) {
+                    String nome = campos[0];
+                    long cep = Long.parseLong(campos[1]);
+                    String bairro = campos[2];
+                    String cidade = campos[3];
+                    String estado = campos[4];
+                    int numero = Integer.parseInt(campos[5]);
+                    String rua = campos[6];
+                    LocalDate dataCadastro = LocalDate.parse(campos[7]);
+                    long cpf = Long.parseLong(campos[8]);
+                    int quantidadeMaximaParcelas = Integer.parseInt(campos[9]);
+
+                    Endereco endereco = new Endereco(rua, numero, bairro, cep, cidade, estado);
+                    PessoaFisica pessoa = new PessoaFisica(nome, endereco, dataCadastro, cpf, quantidadeMaximaParcelas);
+                    listClientes.add(pessoa);
+                } else {
+                    System.out.println("Formato de linha inválido: " + linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         File clienteFile = new File("clientes.txt");
-        if (!clienteFile.exists()) 
+        if (!clienteFile.exists())
             clienteFile.createNewFile();
         FileWriter clienteWriter = new FileWriter(clienteFile, false);
         BufferedWriter clienteBufferedWriter = new BufferedWriter(clienteWriter);
 
-        File produtoFile = new File("clientes.txt");
-        if (!produtoFile.exists()) 
+        File produtoFile = new File("produtos.txt");
+        if (!produtoFile.exists())
             produtoFile.createNewFile();
         FileWriter produtoWriter = new FileWriter(produtoFile, false);
         BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
+
+        File compraFile = new File("compras.txt");
+        if (!compraFile.exists())
+            compraFile.createNewFile();
+        FileWriter compraWriter = new FileWriter(compraFile, false);
+        BufferedWriter compraBufferedWriter = new BufferedWriter(compraWriter);
 
         String[] opcoes = {
                 "1 - Cadastros de Clientes",
@@ -76,6 +113,8 @@ public class App {
                 ExcluirClientePorNome();
             } else if (escolha.equals("4 - Cadastro de Produtos")) {
                 cadastrarProdutos();
+            } else if (escolha.equals("5 - Efetuação de uma compra")) {
+                efetuarCompra();
             } else if (escolha.equals("7 - Relatórios")) {
                 String[] subOpcoes = {
                         "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
@@ -340,6 +379,16 @@ public class App {
             listProdutos.add(produtoPerecivel);
             JOptionPane.showMessageDialog(null, produtoPerecivel.paraString());
         }
+    }
+
+    public static void efetuarCompra() {
+        String[] nomeProdutos = new String[listProdutos.size()];
+
+        for (int i = 0; i < listProdutos.size(); i++) {
+            nomeProdutos[i] = listProdutos.get(i).getNome();
+        }
+        int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o produto:", "Produtos",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, nomeProdutos, nomeProdutos[0]);
     }
 
 }
