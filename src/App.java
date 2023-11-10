@@ -20,29 +20,55 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        //Leitura do documento clientes.txt
+        // Leitura do documento clientes.txt
         try (BufferedReader br = new BufferedReader(new FileReader("clientes.txt"))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] campos = linha.split(",");
-                if (campos.length == 10) {
-                    String nome = campos[0];
-                    long cep = Long.parseLong(campos[1]);
-                    String bairro = campos[2];
-                    String cidade = campos[3];
-                    String estado = campos[4];
-                    int numero = Integer.parseInt(campos[5]);
-                    String rua = campos[6];
-                    LocalDate dataCadastro = LocalDate.parse(campos[7]);
-                    long cpf = Long.parseLong(campos[8]);
-                    int quantidadeMaximaParcelas = Integer.parseInt(campos[9]);
-
+                if (campos[0].equals("Pessoa Física")) {
+                    String nome = campos[1];
+                    long cep = Long.parseLong(campos[2]);
+                    String bairro = campos[3];
+                    String cidade = campos[4];
+                    String estado = campos[5];
+                    int numero = Integer.parseInt(campos[6]);
+                    String rua = campos[7];
+                    LocalDate dataCadastro = LocalDate.parse(campos[8]);
+                    long cpf = Long.parseLong(campos[9]);
+                    int quantidadeMaximaParcelas = Integer.parseInt(campos[10]);
                     Endereco endereco = new Endereco(rua, numero, bairro, cep, cidade, estado);
                     PessoaFisica pessoa = new PessoaFisica(nome, endereco, dataCadastro, cpf, quantidadeMaximaParcelas);
                     listClientes.add(pessoa);
                 } else {
-                    System.out.println("Formato de linha inválido: " + linha);
+
                 }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Leitura do documento produtos.txt
+        try (BufferedReader br = new BufferedReader(new FileReader("produtos.txt"))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] campos = linha.split(",");
+                if (campos[0].equals("Produto")) {
+                    String codigo = campos[1];
+                    String nome = campos[2];
+                    String descricao = campos[3];
+                    float preco = Float.parseFloat(campos[4]);
+                    Produto produto = new Produto(codigo, nome, descricao, preco);
+                    listProdutos.add(produto);
+                } else {
+                    String codigo = campos[1];
+                    String nome = campos[2];
+                    String descricao = campos[3];
+                    float preco = Float.parseFloat(campos[4]);
+                    LocalDate validade = LocalDate.parse(campos[5]);
+                    ProdutoPerecivel produto = new ProdutoPerecivel(codigo, nome, descricao, preco, validade);
+                    listProdutos.add(produto);
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,27 +108,6 @@ public class App {
 
             if (escolha.equals("Sair") || escolha == null) {
 
-                for (Cliente cliente : listClientes) {
-                    if (cliente instanceof PessoaFisica) {
-                        PessoaFisica pessoaFisica = (PessoaFisica) cliente;
-                        clienteBufferedWriter.write(pessoaFisica.paraString() + "\n");
-                    } else if (cliente instanceof PessoaJuridica) {
-                        PessoaJuridica pessoaJuridica = (PessoaJuridica) cliente;
-                        clienteBufferedWriter.write(pessoaJuridica.paraString() + "\n");
-                    }
-                }
-                clienteBufferedWriter.close();
-
-                for (Produto produto : listProdutos) {
-                    if (produto instanceof Produto) {
-                        produtoBufferedWriter.write(produto.paraString() + "\n");
-                    } else if (produto instanceof ProdutoPerecivel) {
-                        ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
-                        produtoBufferedWriter.write(produtoPerecivel.paraString() + "\n");
-                    }
-                }
-                produtoBufferedWriter.close();
-
                 JOptionPane.showMessageDialog(null, "Fechando");
                 break;
             } else if (escolha.equals("1 - Cadastros de Clientes")) {
@@ -141,6 +146,28 @@ public class App {
                 }
             }
         }
+
+        for (Cliente cliente : listClientes) {
+            if (cliente instanceof PessoaFisica) {
+                PessoaFisica pessoaFisica = (PessoaFisica) cliente;
+                clienteBufferedWriter.write(pessoaFisica.paraString() + "\n");
+            } else if (cliente instanceof PessoaJuridica) {
+                PessoaJuridica pessoaJuridica = (PessoaJuridica) cliente;
+                clienteBufferedWriter.write(pessoaJuridica.paraString() + "\n");
+            }
+        }
+        clienteBufferedWriter.close();
+
+        for (Produto produto : listProdutos) {
+            if (produto instanceof Produto) {
+                produtoBufferedWriter.write(produto.paraString() + "\n");
+            } else if (produto instanceof ProdutoPerecivel) {
+                ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
+                produtoBufferedWriter.write(produtoPerecivel.paraString() + "\n");
+            }
+        }
+        produtoBufferedWriter.close();
+
     }
 
     public static int getInt(String mensagem, String titulo) {
