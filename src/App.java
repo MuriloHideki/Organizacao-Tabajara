@@ -17,6 +17,7 @@ public class App {
 
     public static ArrayList<Cliente> listClientes = new ArrayList<Cliente>();
     public static ArrayList<Produto> listProdutos = new ArrayList<Produto>();
+    public static ArrayList<Compra> listCompras = new ArrayList<Compra>();
 
     public static void main(String[] args) throws Exception {
 
@@ -74,6 +75,8 @@ public class App {
             e.printStackTrace();
         }
 
+
+        
         File clienteFile = new File("clientes.txt");
         if (!clienteFile.exists())
             clienteFile.createNewFile();
@@ -147,6 +150,26 @@ public class App {
             }
         }
 
+        escreveClientes(clienteBufferedWriter);
+
+        escreveProdutos(produtoBufferedWriter);
+
+        escreveCompras(compraBufferedWriter);
+    }
+
+    private static void escreveProdutos(BufferedWriter produtoBufferedWriter) throws IOException {
+        for (Produto produto : listProdutos) {
+            if (produto instanceof Produto) {
+                produtoBufferedWriter.write(produto.paraString() + "\n");
+            } else if (produto instanceof ProdutoPerecivel) {
+                ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
+                produtoBufferedWriter.write(produtoPerecivel.paraString() + "\n");
+            }
+        }
+        produtoBufferedWriter.close();
+    }
+
+    private static void escreveClientes(BufferedWriter clienteBufferedWriter) throws IOException {
         for (Cliente cliente : listClientes) {
             if (cliente instanceof PessoaFisica) {
                 PessoaFisica pessoaFisica = (PessoaFisica) cliente;
@@ -157,17 +180,13 @@ public class App {
             }
         }
         clienteBufferedWriter.close();
+    }
 
-        for (Produto produto : listProdutos) {
-            if (produto instanceof Produto) {
-                produtoBufferedWriter.write(produto.paraString() + "\n");
-            } else if (produto instanceof ProdutoPerecivel) {
-                ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
-                produtoBufferedWriter.write(produtoPerecivel.paraString() + "\n");
+    private static void escreveCompras(BufferedWriter compraBufferedWriter) throws IOException {
+        for (Compra compra : listCompras) {
+                compraBufferedWriter.write(compra.paraString() + "\n");
             }
-        }
-        produtoBufferedWriter.close();
-
+        compraBufferedWriter.close();
     }
 
     public static int getInt(String mensagem, String titulo) {
@@ -411,11 +430,30 @@ public class App {
     public static void efetuarCompra() {
         String[] nomeProdutos = new String[listProdutos.size()];
 
-        for (int i = 0; i < listProdutos.size(); i++) {
-            nomeProdutos[i] = listProdutos.get(i).getNome();
-        }
-        int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o produto:", "Produtos",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, nomeProdutos, nomeProdutos[0]);
+        int produtoIndex = 0;
+        Long cpfCnpj = getLong("Informe o CPF ou o CNPJ", "Compra");
+        String identificador = getString("Identificador da compra", "Compra");
+        ArrayList<ItemCompra> itens = new ArrayList<ItemCompra>();
+
+        do {
+            for (int i = 0; i < listProdutos.size(); i++) {
+                nomeProdutos[i] = listProdutos.get(i).getNome();
+            }
+            produtoIndex = JOptionPane.showOptionDialog(null, "Escolha o produto:", "Produtos",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, nomeProdutos, nomeProdutos[0]);
+            int quantidade = getInt("Unidades: ", "Compra");
+            ItemCompra item = new ItemCompra(quantidade, listProdutos.get(produtoIndex).getNome(),
+                    listProdutos.get(produtoIndex).getPreco());
+            itens.add(item);
+
+        } while (produtoIndex != -1);
+
+        Compra compra = new Compra(itens, identificador, LocalDate.now(), cpfCnpj, 0);
+        float totalPago = getFloat(
+                "Deseja realizar o pagamento de quanto?\nValor total da compra: " + compra.getValorTotal(), "Compra");
+        compra.setTotalPago(totalPago);
+
+        listCompras.add(compra);
     }
 
 }

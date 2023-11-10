@@ -6,22 +6,23 @@ public class Compra {
     private String identificador;
     private LocalDate data;
     private float valorTotal;
-    private int cpfCnpj;
+    private Long cpfCnpj;
     private float totalPago;
 
     public Compra() {
     }
 
-    public Compra(List<ItemCompra> itensCompra, String identificador, LocalDate data, float valorTotal, int cpfCnpj,
+    public Compra(List<ItemCompra> itensCompra, String identificador, LocalDate data, Long cpfCnpj,
             float totalPago) {
         this.itensCompra = itensCompra;
         this.identificador = identificador;
         this.data = data;
-        this.valorTotal = valorTotal;
         this.cpfCnpj = cpfCnpj;
         this.totalPago = totalPago;
+        calculaValorTotal(itensCompra);
     }
 
+    
     public List<ItemCompra> getItensCompra() {
         return itensCompra;
     }
@@ -33,7 +34,7 @@ public class Compra {
     public String getIdentificador() {
         return identificador;
     }
-
+    
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
@@ -54,14 +55,14 @@ public class Compra {
         this.valorTotal = valorTotal;
     }
 
-    public int getCpfCnpj() {
+    public Long getCpfCnpj() {
         return cpfCnpj;
     }
-
-    public void setCpfCnpj(int cpfCnpj) {
+    
+    public void setCpfCnpj(Long cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
-
+    
     public float getTotalPago() {
         return totalPago;
     }
@@ -74,4 +75,14 @@ public class Compra {
         return this.valorTotal - this.totalPago;
     }
 
+    private void calculaValorTotal(List<ItemCompra> itensCompra) {
+        for (ItemCompra item : itensCompra) {
+            this.valorTotal += item.getValorTotal();
+        }
+    }
+
+    public String paraString() {
+        //TODO Bolar uma maneira de colocar os itemCompra na string
+        return identificador+","+data+","+cpfCnpj+","+totalPago+",";
+    }
 }

@@ -7,11 +7,11 @@ public class ItemCompra {
     public ItemCompra() {
     }
 
-    public ItemCompra(int quantidade, String nomeProduto, float precoUnitario, float valorTotal) {
+    public ItemCompra(int quantidade, String nomeProduto, float precoUnitario) {
         this.quantidade = quantidade;
         this.nomeProduto = nomeProduto;
         this.precoUnitario = precoUnitario;
-        this.valorTotal = valorTotal;
+        this.valorTotal = valorTotal * quantidade;
     }
 
     public int getQuantidade() {
