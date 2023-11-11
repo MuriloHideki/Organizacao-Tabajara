@@ -15,13 +15,7 @@ public class Produto {
     }
 
     public String paraString() {
-        return 
-        "====================================="+
-        "\n*Produto" +
-        "\nCódigo do produto: " + getCodigo() + 
-        "\nNome: " + getNome() + 
-        "\nDescrição: " + getDescricao() + 
-        "\nPreço: " + getPreco();
+        return "Produto," + getCodigo() + "," + getNome() + "," + getDescricao() + "," + getPreco();
         /*
          * return "*Produto:" +
          * "\nCódigo do produto: " + getCodigo() +

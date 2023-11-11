@@ -22,9 +22,7 @@ public class ProdutoPerecivel extends Produto {
 
     @Override
     public String paraString() {
-        return 
-        "=====================================" +
-        "\n*Produto Perecível" +
+        return "*Produto Perecível:" +
                 "\nCódigo do produto: " + getCodigo() +
                 "\nNome: " + getNome() +
                 "\nDescrição: " + getDescricao() +
