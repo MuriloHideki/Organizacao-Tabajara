@@ -22,7 +22,6 @@ public class Compra {
         calculaValorTotal(itensCompra);
     }
 
-    
     public List<ItemCompra> getItensCompra() {
         return itensCompra;
     }
@@ -34,7 +33,7 @@ public class Compra {
     public String getIdentificador() {
         return identificador;
     }
-    
+
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
@@ -58,11 +57,11 @@ public class Compra {
     public Long getCpfCnpj() {
         return cpfCnpj;
     }
-    
+
     public void setCpfCnpj(Long cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
-    
+
     public float getTotalPago() {
         return totalPago;
     }
@@ -82,7 +81,11 @@ public class Compra {
     }
 
     public String paraString() {
-        //TODO Bolar uma maneira de colocar os itemCompra na string
-        return identificador+","+data+","+cpfCnpj+","+totalPago+",";
+        String itensCompra = "";
+        for (ItemCompra item : this.itensCompra) {
+            itensCompra = item.getNomeProduto() + "," + item.getQuantidade() + "," + item.getPrecoUnitario() + ","
+                    + item.getValorTotal();
+        }
+        return identificador + "," + data + "," + cpfCnpj + "," + totalPago + "," + itensCompra;
     }
 }
