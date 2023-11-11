@@ -101,48 +101,56 @@ public class App {
                 "5 - Efetuação de uma compra",
                 "6 - Atualização da situação de pagamento de uma compra",
                 "7 - Relatórios",
-                "Sair" };
+                "Sair"
+        };
+
+        boolean voltarMenuInicial = false;
 
         while (true) {
-            String escolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "Menu inicial",
-                    JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]).toString();
+            if (voltarMenuInicial) {
+                voltarMenuInicial = false;
+            } else {
+                String escolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "Menu inicial",
+                        JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]).toString();
 
-            if (escolha.equals("Sair") || escolha == null) {
+                if (escolha.equals("Sair") || escolha == null) {
+                    JOptionPane.showMessageDialog(null, "Fechando");
+                    break;
+                } else if (escolha.equals("1 - Cadastros de Clientes")) {
+                    cadastrarClientes();
+                } else if (escolha.equals("2 - Deletar cliente pelo CPF ou CNPJ")) {
+                    excluirClientePorCPFCNPJ();
+                } else if (escolha.equals("3 - Deletar cliente pelo nome")) {
+                    excluirClientePorNome();
+                } else if (escolha.equals("4 - Cadastro de Produtos")) {
+                    cadastrarProdutos();
+                } else if (escolha.equals("5 - Efetuação de uma compra")) {
+                    efetuarCompra();
+                } else if (escolha.equals("7 - Relatórios")) {
+                    String[] subOpcoes = {
+                            "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
+                            "(b) Relação de todos os Produtos",
+                            "(c) Busca de um produto pelo nome",
+                            "(d) Relação de produtos que são perecíveis e que estão com a data de validade vencida",
+                            "(e) Relação de todas as compras",
+                            "(f) Busca de uma compra pelo número",
+                            "(g) Relação de todas as compras que não foram pagas ainda",
+                            "(h) Relação das 10 últimas compras pagas",
+                            "(i) Apresentação das informações da compra mais cara",
+                            "(j) Apresentação das informações da compra mais barata",
+                            "(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses",
+                            "Voltar"
+                    };
 
-                JOptionPane.showMessageDialog(null, "Fechando");
-                break;
-            } else if (escolha.equals("1 - Cadastros de Clientes")) {
-                CadastrarClientes();
-            } else if (escolha.equals("2 - Deletar cliente pelo CPF ou CNPJ")) {
-                ExcluirClientePorCPFCNPJ();
-            } else if (escolha.equals("3 - Deletar cliente pelo nome")) {
-                ExcluirClientePorNome();
-            } else if (escolha.equals("4 - Cadastro de Produtos")) {
-                cadastrarProdutos();
-            } else if (escolha.equals("5 - Efetuação de uma compra")) {
-                efetuarCompra();
-            } else if (escolha.equals("7 - Relatórios")) {
-                String[] subOpcoes = {
-                        "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
-                        "(b) Relação de todos os Produtos",
-                        "(c) Busca de um produto pelo nome",
-                        "(d) Relação de produtos que são perecíveis e que estão com a data de validade vencida",
-                        "(e) Relação de todas as compras",
-                        "(f) Busca de uma compra pelo número",
-                        "(g) Relação de todas as compras que não foram pagas ainda",
-                        "(h) Relação das 10 últimas compras pagas",
-                        "(i) Apresentação das informações da compra mais cara",
-                        "(j) Apresentação das informações da compra mais barata",
-                        "(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses",
-                        "Voltar" };
+                    while (true) {
+                        String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
+                                JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
 
-                while (true) {
-                    String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
-                            JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
-
-                    if (subEscolha.equals("Voltar") || subEscolha == null) {
-                        JOptionPane.showMessageDialog(null, "Voltando...");
-                        break;
+                        if (subEscolha.equals("Voltar") || subEscolha == null) {
+                            JOptionPane.showMessageDialog(null, "Voltando...");
+                            voltarMenuInicial = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -298,7 +306,7 @@ public class App {
     }
 
     // Organizando as ações do menu em métodos específicos
-    public static void CadastrarClientes() {
+    public static void cadastrarClientes() {
         String[] tipoCliente = { "Pessoa Física", "Pessoa Jurídica" };
         int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de cliente:", "Tipo de Cliente",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
@@ -335,7 +343,7 @@ public class App {
         }
     }
 
-    public static void ExcluirClientePorCPFCNPJ() {
+    public static void excluirClientePorCPFCNPJ() {
         String[] tipoCliente = { "Pessoa Física", "Pessoa Jurídica" };
         int tipoEscolhido = JOptionPane.showOptionDialog(null, "Escolha o tipo de cliente:", "Tipo de Cliente",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, tipoCliente, tipoCliente[0]);
@@ -376,7 +384,7 @@ public class App {
         }
     }
 
-    public static void ExcluirClientePorNome() {
+    public static void excluirClientePorNome() {
         String nome = getString("Nome: ", "Dados pessoais");
         boolean blnEncontrou = false;
         for (Cliente cliente : listClientes) {
