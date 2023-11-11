@@ -126,6 +126,8 @@ public class App {
                     cadastrarProdutos();
                 } else if (escolha.equals("5 - Efetuação de uma compra")) {
                     efetuarCompra();
+                } else if (escolha.equals("6 - Atualização da situação de pagamento de uma compra")) {
+                    atualizarPrecoCompra();
                 } else if (escolha.equals("7 - Relatórios")) {
                     String[] subOpcoes = {
                             "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres",
@@ -490,4 +492,41 @@ public class App {
         listCompras.add(compra);
     }
 
+    public static void atualizarPrecoCompra() {
+        String identificador = JOptionPane.showInputDialog(null, "Informe o identificador da compra:",
+                "Atualização da situação de pagamento", JOptionPane.QUESTION_MESSAGE);
+        Compra compraEscolhida = null;
+        for (Compra compra : listCompras) {
+            if (compra.getIdentificador().equals(identificador)) {
+                compraEscolhida = compra;
+                break;
+            }
+        }
+        if (compraEscolhida == null) {
+            JOptionPane.showMessageDialog(null, "Compra não encontrada com o identificador informado.", "Erro encontrado!",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JOptionPane.showMessageDialog(null,
+                "Preço atual da compra (" + identificador + "): " + compraEscolhida.getValorTotal(),
+                "Atualização da situação de pagamento", JOptionPane.DEFAULT_OPTION);
+        String precoSubtraido = JOptionPane.showInputDialog(null, "Digite o preço a ser abatido",
+                "Atualização de preço", JOptionPane.QUESTION_MESSAGE);
+        float precoAbatido = Float.parseFloat(precoSubtraido);
+        float novoPreco = compraEscolhida.getValorTotal() - precoAbatido;
+    
+        if (novoPreco <= 0) {
+           
+            JOptionPane.showMessageDialog(null, "Compra já foi paga.", "Atualização de Preço",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+         
+            float troco = precoAbatido - compraEscolhida.getValorTotal();
+            compraEscolhida.setValorTotal(0); 
+            JOptionPane.showMessageDialog(null,
+                    "Compra paga. Troco: " + troco + "\nPreço atualizado da compra (" + identificador + "): " + novoPreco,
+                    "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
+        }
+    }
+    
 }
