@@ -75,8 +75,6 @@ public class App {
             e.printStackTrace();
         }
 
-
-        
         File clienteFile = new File("clientes.txt");
         if (!clienteFile.exists())
             clienteFile.createNewFile();
@@ -184,8 +182,8 @@ public class App {
 
     private static void escreveCompras(BufferedWriter compraBufferedWriter) throws IOException {
         for (Compra compra : listCompras) {
-                compraBufferedWriter.write(compra.paraString() + "\n");
-            }
+            compraBufferedWriter.write(compra.paraString() + "\n");
+        }
         compraBufferedWriter.close();
     }
 
@@ -428,10 +426,31 @@ public class App {
     }
 
     public static void efetuarCompra() {
-        String[] nomeProdutos = new String[listProdutos.size()];
+        String[] nomeProdutos = new String[(listProdutos.size() + 1)];
+        if (listProdutos.isEmpty()) {
+            // TODO Murilo Adicionar mensagem informando que a lista de produto está vazia.
+            return;
+        }
 
         int produtoIndex = 0;
-        Long cpfCnpj = getLong("Informe o CPF ou o CNPJ", "Compra");
+        Long cpfCnpj;
+        Boolean encontrouCliente = false;
+        do {
+            cpfCnpj = getLong("Informe o CPF ou o CNPJ", "Compra");
+            for (int index = 0; index < listClientes.size(); index++) {
+                if (listClientes.get(index) instanceof PessoaFisica
+                        && ((PessoaFisica) listClientes.get(index)).getCpf() == cpfCnpj) {
+                    encontrouCliente = true;
+                } else if (listClientes.get(index) instanceof PessoaJuridica
+                        && ((PessoaJuridica) listClientes.get(index)).getCnpj() == cpfCnpj) {
+                    encontrouCliente = true;
+                } else {
+                    // TODO Murilo adicionar uma mensagem informando que o Cpf/Cnpj não condiz com
+                    // nenhum cliente cadastrado e perguntar se deseja tentar novamente
+                }
+            }
+        } while (!encontrouCliente);
+
         String identificador = getString("Identificador da compra", "Compra");
         ArrayList<ItemCompra> itens = new ArrayList<ItemCompra>();
 
@@ -439,18 +458,25 @@ public class App {
             for (int i = 0; i < listProdutos.size(); i++) {
                 nomeProdutos[i] = listProdutos.get(i).getNome();
             }
+            nomeProdutos[listProdutos.size()] = "Finalizar";
+
             produtoIndex = JOptionPane.showOptionDialog(null, "Escolha o produto:", "Produtos",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, nomeProdutos, nomeProdutos[0]);
+            if (produtoIndex == listProdutos.size()) {
+                break;
+            }
             int quantidade = getInt("Unidades: ", "Compra");
             ItemCompra item = new ItemCompra(quantidade, listProdutos.get(produtoIndex).getNome(),
                     listProdutos.get(produtoIndex).getPreco());
             itens.add(item);
 
-        } while (produtoIndex != -1);
+        } while (true);
 
         Compra compra = new Compra(itens, identificador, LocalDate.now(), cpfCnpj, 0);
+        String valorTotalFormatado = String.format("%.2f", compra.getValorTotal());
         float totalPago = getFloat(
-                "Deseja realizar o pagamento de quanto?\nValor total da compra: " + compra.getValorTotal(), "Compra");
+                "Deseja realizar o pagamento de quanto?\nValor total da compra: " + valorTotalFormatado,
+                "Compra");
         compra.setTotalPago(totalPago);
 
         listCompras.add(compra);
