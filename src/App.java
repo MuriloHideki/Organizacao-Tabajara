@@ -21,8 +21,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        // Leitura do documento clientes.txt
-        try (BufferedReader br = new BufferedReader(new FileReader("clientes.txt"))) {
+        // Leitura do documento baseDados/clientes.txt
+        try (BufferedReader br = new BufferedReader(new FileReader("baseDados/clientes.txt"))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] campos = linha.split(",");
@@ -48,8 +48,8 @@ public class App {
             e.printStackTrace();
         }
 
-        // Leitura do documento produtos.txt
-        try (BufferedReader br = new BufferedReader(new FileReader("produtos.txt"))) {
+        // Leitura do documento baseDados/produtos.txt
+        try (BufferedReader br = new BufferedReader(new FileReader("baseDados/produtos.txt"))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] campos = linha.split(",");
@@ -75,19 +75,19 @@ public class App {
             e.printStackTrace();
         }
 
-        File clienteFile = new File("clientes.txt");
+        File clienteFile = new File("baseDados/clientes.txt");
         if (!clienteFile.exists())
             clienteFile.createNewFile();
         FileWriter clienteWriter = new FileWriter(clienteFile, false);
         BufferedWriter clienteBufferedWriter = new BufferedWriter(clienteWriter);
 
-        File produtoFile = new File("produtos.txt");
+        File produtoFile = new File("baseDados/produtos.txt");
         if (!produtoFile.exists())
             produtoFile.createNewFile();
         FileWriter produtoWriter = new FileWriter(produtoFile, false);
         BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
 
-        File compraFile = new File("compras.txt");
+        File compraFile = new File("baseDados/compras.txt");
         if (!compraFile.exists())
             compraFile.createNewFile();
         FileWriter compraWriter = new FileWriter(compraFile, false);
