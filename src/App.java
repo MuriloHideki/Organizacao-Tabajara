@@ -164,6 +164,8 @@ public class App {
                             buscarProdutoPorNome();
                         } else if (subEscolha.equals("(e) Relação de todas as compras")) {
                             listarCompras();
+                        } else if (subEscolha.equals("(f) Busca de uma compra pelo número")) {
+                            buscarCompraPorNumero();
                         } else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
                             break;
@@ -633,4 +635,31 @@ public class App {
         JOptionPane.showMessageDialog(null, resultado.toString());
     }
 
+    // Item F
+    public static void buscarCompraPorNumero() {
+        String identificador = JOptionPane.showInputDialog(null, "Digite o identificador da compra:", "Buscar compra pelo identificador",
+                JOptionPane.PLAIN_MESSAGE);
+
+        if (identificador == null) {
+            JOptionPane.showMessageDialog(null, "A operação foi cancelada.");
+            return;
+        }
+
+        boolean encontrouCompra = false;
+        StringBuilder resultado = new StringBuilder("Resultado da busca:\n");
+
+        for (Compra compra : listCompras) {
+            if (compra.getIdentificador().equalsIgnoreCase(identificador)) {
+                resultado.append(compra.paraString()).append("\n");
+                encontrouCompra = true;
+                break;
+            }
+        }
+
+        if (!encontrouCompra) {
+            JOptionPane.showMessageDialog(null, "Nenhuma compra: [" + identificador + "] foi encontrada.");
+        } else {
+            JOptionPane.showMessageDialog(null, resultado.toString());
+        }
+    }
 }
