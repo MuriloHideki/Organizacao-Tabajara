@@ -155,10 +155,15 @@ public class App {
                         String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
                                 JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
 
-                        if (subEscolha.equals("Voltar") || subEscolha == null) {
+                        if (subEscolha.equals("(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
+                            buscarClientesPorNome();
+                        } else if (subEscolha.equals("(b) Relação de todos os Produtos")) {
+                            listarProdutos();
+                        } else if (subEscolha.equals("(c) Busca de um produto pelo nome")) {
+                            buscarProdutoPorNome();
+                        }else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
-                            voltarMenuInicial = true;
-                            break;
+                        break;
                         }
                     }
                 }
@@ -538,6 +543,76 @@ public class App {
                 "Preço atualizado da compra (" + identificador + "): " + novoPreco,
                 "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
 
+    }
+
+    // Iniciando Item 7  - Relatório
+    public static void buscarClientesPorNome() {
+        String sequencia = JOptionPane.showInputDialog("Digite a sequência de caracteres para buscar clientes:");
+        if (sequencia == null) {
+            JOptionPane.showMessageDialog(null, "Operação cancelada.");
+            return;
+        }
+
+        ArrayList<Cliente> clientesEncontrados = new ArrayList<>();
+
+        for (Cliente cliente : listClientes) {
+        if (cliente.getNome().toLowerCase().startsWith(sequencia.toLowerCase())) {
+            clientesEncontrados.add(cliente);
+        }
+        }
+
+    // Resultados da busca
+    if (!clientesEncontrados.isEmpty()) {
+        StringBuilder resultado = new StringBuilder("Clientes encontrados:\n");
+        for (Cliente cliente : clientesEncontrados) {
+            resultado.append(cliente.getNome()).append("\n");
+        }
+        JOptionPane.showMessageDialog(null, resultado.toString());
+    } else {
+        JOptionPane.showMessageDialog(null, "Nenhum cliente encontrado!");
+    }
+    }
+
+    // Item B
+    public static void listarProdutos() {
+    if (listProdutos.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Não há produtos cadastrados.");
+        return;
+    }
+
+    StringBuilder resultado = new StringBuilder("Lista de Produtos:\n");
+    for (Produto produto : listProdutos) {
+        resultado.append(produto.paraString()).append("\n");
+    }
+
+    JOptionPane.showMessageDialog(null, resultado.toString());
+    }
+
+    // Item C
+    public static void buscarProdutoPorNome() {
+    String nomeBusca = JOptionPane.showInputDialog(null, "Digite o nome do produto:", "Buscar Produto",
+            JOptionPane.PLAIN_MESSAGE);
+
+    if (nomeBusca == null) {
+        JOptionPane.showMessageDialog(null, "Operação cancelada.");
+        return;
+    }
+
+    boolean produtoEncontrado = false;
+    StringBuilder resultado = new StringBuilder("Resultado da busca:\n");
+
+    for (Produto produto : listProdutos) {
+        if (produto.getNome().toLowerCase().startsWith(nomeBusca.toLowerCase())) {
+            resultado.append(produto.paraString()).append("\n");
+            produtoEncontrado = true;
+        }
+    }
+
+    if (!produtoEncontrado) {
+        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado com o nome iniciado por: " + nomeBusca);
+    } else {
+        JOptionPane.showMessageDialog(null, resultado.toString());
+    }
     }
 
 }
