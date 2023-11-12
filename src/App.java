@@ -114,8 +114,15 @@ public class App {
                         JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]).toString();
 
                 if (escolha.equals("Sair") || escolha == null) {
-                    JOptionPane.showMessageDialog(null, "Fechando");
-                    break;
+                    int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja realmente fechar o programa?",
+                            "Confirmação",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (confirmacao == JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Fechando o programa, clique em 'OK'", "Fechando",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    }
                 } else if (escolha.equals("1 - Cadastros de Clientes")) {
                     cadastrarClientes();
                 } else if (escolha.equals("2 - Deletar cliente pelo CPF ou CNPJ")) {
@@ -503,7 +510,8 @@ public class App {
             }
         }
         if (compraEscolhida == null) {
-            JOptionPane.showMessageDialog(null, "Compra não encontrada com o identificador informado.", "Erro encontrado!",
+            JOptionPane.showMessageDialog(null, "Compra não encontrada com o identificador informado.",
+                    "Erro encontrado!",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -514,17 +522,22 @@ public class App {
                 "Atualização de preço", JOptionPane.QUESTION_MESSAGE);
         float precoAbatido = Float.parseFloat(precoSubtraido);
         float novoPreco = compraEscolhida.getValorTotal() - precoAbatido;
-    
+
         if (novoPreco < 0) {
-            JOptionPane.showMessageDialog(null, "O preço não pode ser maior que o valor original.", "Atualização de Preço",
+            JOptionPane.showMessageDialog(null, "O preço não pode ser maior que o valor original.",
+                    "Atualização de Preço",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-    
+
+        float totalPago = getFloat("Digite o novo valor total pago", "Atualização de Preço");
         compraEscolhida.setValorTotal(novoPreco);
+        compraEscolhida.setTotalPago(totalPago);
+
         JOptionPane.showMessageDialog(null,
                 "Preço atualizado da compra (" + identificador + "): " + novoPreco,
                 "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
+
     }
-    
+
 }
