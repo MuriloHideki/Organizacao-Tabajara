@@ -1,4 +1,0 @@
-<<<<<<< HEAD
-Pessoa Física,José,1111111,Bairro 1,Sorocaba,São Paulo,1,Rua 1,2023-11-11,12345,5
-=======
->>>>>>> e495657729465274052b29a52b47742296f0ca6d

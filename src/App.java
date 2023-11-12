@@ -155,15 +155,18 @@ public class App {
                         String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
                                 JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
 
-                        if (subEscolha.equals("(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
+                        if (subEscolha.equals(
+                                "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
                             buscarClientesPorNome();
                         } else if (subEscolha.equals("(b) Relação de todos os Produtos")) {
                             listarProdutos();
                         } else if (subEscolha.equals("(c) Busca de um produto pelo nome")) {
                             buscarProdutoPorNome();
-                        }else if (subEscolha.equals("Voltar") || subEscolha == null) {
+                        } else if (subEscolha.equals("(e) Relação de todas as compras")) {
+                            listarCompras();
+                        } else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
-                        break;
+                            break;
                         }
                     }
                 }
@@ -545,7 +548,7 @@ public class App {
 
     }
 
-    // Iniciando Item 7  - Relatório
+    // Iniciando Item 7 - Relatório
     public static void buscarClientesPorNome() {
         String sequencia = JOptionPane.showInputDialog("Digite a sequência de caracteres para buscar clientes:");
         if (sequencia == null) {
@@ -556,63 +559,78 @@ public class App {
         ArrayList<Cliente> clientesEncontrados = new ArrayList<>();
 
         for (Cliente cliente : listClientes) {
-        if (cliente.getNome().toLowerCase().startsWith(sequencia.toLowerCase())) {
-            clientesEncontrados.add(cliente);
-        }
+            if (cliente.getNome().toLowerCase().startsWith(sequencia.toLowerCase())) {
+                clientesEncontrados.add(cliente);
+            }
         }
 
-    // Resultados da busca
-    if (!clientesEncontrados.isEmpty()) {
-        StringBuilder resultado = new StringBuilder("Clientes encontrados:\n");
-        for (Cliente cliente : clientesEncontrados) {
-            resultado.append(cliente.getNome()).append("\n");
+        // Resultados da busca
+        if (!clientesEncontrados.isEmpty()) {
+            StringBuilder resultado = new StringBuilder("Clientes encontrados:\n");
+            for (Cliente cliente : clientesEncontrados) {
+                resultado.append(cliente.getNome()).append("\n");
+            }
+            JOptionPane.showMessageDialog(null, resultado.toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum cliente encontrado!");
         }
-        JOptionPane.showMessageDialog(null, resultado.toString());
-    } else {
-        JOptionPane.showMessageDialog(null, "Nenhum cliente encontrado!");
-    }
     }
 
     // Item B
     public static void listarProdutos() {
-    if (listProdutos.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Não há produtos cadastrados.");
-        return;
-    }
+        if (listProdutos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há produtos cadastrados.");
+            return;
+        }
 
-    StringBuilder resultado = new StringBuilder("Lista de Produtos:\n");
-    for (Produto produto : listProdutos) {
-        resultado.append(produto.paraString()).append("\n");
-    }
+        StringBuilder resultado = new StringBuilder("Lista de produtos:\n");
+        for (Produto produto : listProdutos) {
+            resultado.append(produto.paraString()).append("\n");
+        }
 
-    JOptionPane.showMessageDialog(null, resultado.toString());
+        JOptionPane.showMessageDialog(null, resultado.toString());
     }
 
     // Item C
     public static void buscarProdutoPorNome() {
-    String nomeBusca = JOptionPane.showInputDialog(null, "Digite o nome do produto:", "Buscar Produto",
-            JOptionPane.PLAIN_MESSAGE);
+        String nomeBusca = JOptionPane.showInputDialog(null, "Digite o nome do produto:", "Buscar Produto",
+                JOptionPane.PLAIN_MESSAGE);
 
-    if (nomeBusca == null) {
-        JOptionPane.showMessageDialog(null, "Operação cancelada.");
-        return;
-    }
+        if (nomeBusca == null) {
+            JOptionPane.showMessageDialog(null, "Operação cancelada.");
+            return;
+        }
 
-    boolean produtoEncontrado = false;
-    StringBuilder resultado = new StringBuilder("Resultado da busca:\n");
+        boolean produtoEncontrado = false;
+        StringBuilder resultado = new StringBuilder("Resultado da busca:\n");
 
-    for (Produto produto : listProdutos) {
-        if (produto.getNome().toLowerCase().startsWith(nomeBusca.toLowerCase())) {
-            resultado.append(produto.paraString()).append("\n");
-            produtoEncontrado = true;
+        for (Produto produto : listProdutos) {
+            if (produto.getNome().toLowerCase().startsWith(nomeBusca.toLowerCase())) {
+                resultado.append(produto.paraString()).append("\n");
+                produtoEncontrado = true;
+            }
+        }
+
+        if (!produtoEncontrado) {
+            JOptionPane.showMessageDialog(null, "Nenhum produto encontrado com o nome iniciado por: " + nomeBusca);
+        } else {
+            JOptionPane.showMessageDialog(null, resultado.toString());
         }
     }
+    // Item D *HÁ FAZER
 
-    if (!produtoEncontrado) {
-        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado com o nome iniciado por: " + nomeBusca);
-    } else {
+    // Item E
+    public static void listarCompras() {
+        if (listCompras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
+        StringBuilder resultado = new StringBuilder("Lista de compras:\n");
+        for (Compra compra : listCompras) {
+            resultado.append(compra.paraString()).append("\n");
+        }
+
         JOptionPane.showMessageDialog(null, resultado.toString());
-    }
     }
 
 }

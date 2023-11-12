@@ -1,4 +1,0 @@
-<<<<<<< HEAD
-Produto,1,Bola de futebol,Brinquedo preferido das crianças,35.0
-=======
->>>>>>> e495657729465274052b29a52b47742296f0ca6d
