@@ -166,6 +166,10 @@ public class App {
                             listarCompras();
                         } else if (subEscolha.equals("(f) Busca de uma compra pelo número")) {
                             buscarCompraPorNumero();
+                        } else if (subEscolha.equals("(i) Apresentação das informações da compra mais cara")) {
+                            compraMaisCara();
+                        } else if (subEscolha.equals("(j) Apresentação das informações da compra mais barata")) {
+                            compraMaisBarata();
                         } else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
                             break;
@@ -637,7 +641,8 @@ public class App {
 
     // Item F
     public static void buscarCompraPorNumero() {
-        String identificador = JOptionPane.showInputDialog(null, "Digite o identificador da compra:", "Buscar compra pelo identificador",
+        String identificador = JOptionPane.showInputDialog(null, "Digite o identificador da compra:",
+                "Buscar compra pelo identificador",
                 JOptionPane.PLAIN_MESSAGE);
 
         if (identificador == null) {
@@ -662,4 +667,40 @@ public class App {
             JOptionPane.showMessageDialog(null, resultado.toString());
         }
     }
+
+    public static void compraMaisCara() {
+        
+        if (listCompras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
+
+        Compra compraMaisCara = listCompras.get(0);
+
+        for (Compra compra : listCompras) {
+            if (compra.getValorTotal() > compraMaisCara.getValorTotal()) {
+                compraMaisCara = compra;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Informações da compra mais cara:\n" + compraMaisCara.paraString());
+    }
+
+    public static void compraMaisBarata() {
+        if (listCompras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
+
+        Compra compraMaisBarata = listCompras.get(0);
+
+        for (Compra compra : listCompras) {
+            if (compra.getValorTotal() < compraMaisBarata.getValorTotal()) {
+                compraMaisBarata = compra;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Informações da compra mais barata:\n" + compraMaisBarata.paraString());
+    }
+
 }
