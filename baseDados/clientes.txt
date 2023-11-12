@@ -1,1 +1,0 @@
-Pessoa Física,Leonardo,18101000,bairro,cidade,estado,12,rua,2023-11-11,11111111,2
