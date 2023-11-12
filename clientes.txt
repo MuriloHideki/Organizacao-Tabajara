@@ -1,1 +1,0 @@
-Pessoa Física,Nome 01,11111111,Centro,Sorocaba,SP,1,Rua,2023-11-09,11111111111,12

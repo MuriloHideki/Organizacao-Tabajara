@@ -515,18 +515,16 @@ public class App {
         float precoAbatido = Float.parseFloat(precoSubtraido);
         float novoPreco = compraEscolhida.getValorTotal() - precoAbatido;
     
-        if (novoPreco <= 0) {
-           
-            JOptionPane.showMessageDialog(null, "Compra já foi paga.", "Atualização de Preço",
-                    JOptionPane.WARNING_MESSAGE);
-        } else {
-         
-            float troco = precoAbatido - compraEscolhida.getValorTotal();
-            compraEscolhida.setValorTotal(0); 
-            JOptionPane.showMessageDialog(null,
-                    "Compra paga. Troco: " + troco + "\nPreço atualizado da compra (" + identificador + "): " + novoPreco,
-                    "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
+        if (novoPreco < 0) {
+            JOptionPane.showMessageDialog(null, "O preço não pode ser maior que o valor original.", "Atualização de Preço",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
+    
+        compraEscolhida.setValorTotal(novoPreco);
+        JOptionPane.showMessageDialog(null,
+                "Preço atualizado da compra (" + identificador + "): " + novoPreco,
+                "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
     }
     
 }
