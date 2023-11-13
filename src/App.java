@@ -467,6 +467,11 @@ public class App {
             return;
         }
 
+        if (listClientes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "A lista de clientes está vazia.");
+            return;
+        }
+
         int produtoIndex = 0;
         Long cpfCnpj;
         Boolean encontrouCliente = false;
@@ -480,12 +485,18 @@ public class App {
                         && ((PessoaJuridica) listClientes.get(index)).getCnpj() == cpfCnpj) {
                     encontrouCliente = true;
                 } else {
-                    // TODO Murilo adicionar uma mensagem informando que o Cpf/Cnpj não condiz com
-                    // nenhum cliente cadastrado e perguntar se deseja tentar novamente
+                    int resposta = JOptionPane.showConfirmDialog(null,
+                            "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
+                            "Aviso", JOptionPane.YES_NO_OPTION);
+
+                    if (resposta == JOptionPane.NO_OPTION) {
+                        return;
+                    } else {
+                        encontrouCliente = false;
+                    }
                 }
             }
         } while (!encontrouCliente);
-
         String identificador = getString("Identificador da compra", "Compra");
         ArrayList<ItemCompra> itens = new ArrayList<ItemCompra>();
 
