@@ -158,12 +158,15 @@ public class App {
                         String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
                                 JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
 
-                        if (subEscolha.equals("(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
+                        if (subEscolha.equals(
+                                "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
                             buscarClientesPorNome();
                         } else if (subEscolha.equals("(b) Relação de todos os Produtos")) {
                             listarProdutos();
                         } else if (subEscolha.equals("(c) Busca de um produto pelo nome")) {
                             buscarProdutoPorNome();
+                        } else if (subEscolha.equals("(d) Relação de produtos que são perecíveis e que estão com a data de validade vencida")) {
+                            produtosVencido();
                         } else if (subEscolha.equals("(e) Relação de todas as compras")) {
                             listarCompras();
                         } else if (subEscolha.equals("(f) Busca de uma compra pelo número")) {
@@ -305,7 +308,7 @@ public class App {
 
     private static String getString(String mensagem, String titulo) {
         return (JOptionPane.showInputDialog(null, mensagem, titulo, JOptionPane.PLAIN_MESSAGE));
-    }
+            }
 
     private static Endereco getEndereco() {
         String titulo = "Endereço";
@@ -560,6 +563,10 @@ public class App {
 
     // Iniciando Item 7 - Relatório
     public static void buscarClientesPorNome() {
+         if (listClientes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há clientes cadastrados.");
+            return;
+        }
         String sequencia = JOptionPane.showInputDialog("Digite a sequência de caracteres para buscar clientes:");
         if (sequencia == null) {
             JOptionPane.showMessageDialog(null, "Operação cancelada.");
@@ -603,6 +610,11 @@ public class App {
 
     // Item C
     public static void buscarProdutoPorNome() {
+
+          if (listProdutos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há produtos cadastrados.");
+            return;
+        }
         String nomeBusca = JOptionPane.showInputDialog(null, "Digite o nome do produto:", "Buscar Produto",
                 JOptionPane.PLAIN_MESSAGE);
 
@@ -627,7 +639,38 @@ public class App {
             JOptionPane.showMessageDialog(null, resultado.toString());
         }
     }
-    // Item D *HÁ FAZER
+    
+    // Item D
+    public static void produtosVencido(){
+        if (listProdutos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há produtos cadastrados.");
+            return;
+        }
+
+        StringBuilder resultado = new StringBuilder("Produtos vencidos:\n");
+        LocalDate dataAtual = LocalDate.now();
+
+    for (Produto produto : listProdutos) {
+        if (produto instanceof ProdutoPerecivel) {
+            ProdutoPerecivel produtoPerecivel = (ProdutoPerecivel) produto;
+            LocalDate dataValidade = produtoPerecivel.getValidade();
+
+         
+            if (dataValidade.isBefore(dataAtual)) {
+                resultado.append(produto.paraString())
+                        .append(" - Vencimento: ").append(dataValidade).append("\n");
+            }
+        }
+    }
+
+    if (resultado.toString().equals("Produtos vencidos:\n")) {
+        JOptionPane.showMessageDialog(null, "Não há produtos vencidos.");
+    } else {
+        JOptionPane.showMessageDialog(null, resultado.toString());
+    }
+}
+        
+    
 
     // Item E
     public static void listarCompras() {
@@ -645,6 +688,10 @@ public class App {
 
     // Item F
     public static void buscarCompraPorNumero() {
+         if (listCompras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
         String identificador = JOptionPane.showInputDialog(null, "Digite o identificador da compra:",
                 "Buscar compra pelo identificador",
                 JOptionPane.PLAIN_MESSAGE);
@@ -672,11 +719,11 @@ public class App {
         }
     }
 
-    //Item H
+    // Item H
     public static void ultimasDezComprasPagas() {
         List<Compra> comprasPagas = listCompras.stream()
-            .filter(compra -> compra.getTotalPago() > 0)
-            .collect(Collectors.toList());
+                .filter(compra -> compra.getTotalPago() > 0)
+                .collect(Collectors.toList());
 
         if (comprasPagas.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há compras pagas para exibir.");
@@ -684,9 +731,9 @@ public class App {
         }
 
         List<Compra> ultimasDezComprasPagas = comprasPagas.stream()
-            .sorted(Comparator.comparing(Compra::getData).reversed())
-            .limit(10)
-            .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Compra::getData).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
 
         StringBuilder mensagem = new StringBuilder("Últimas 10 compras pagas:\n");
         for (Compra compra : ultimasDezComprasPagas) {
@@ -696,6 +743,7 @@ public class App {
         JOptionPane.showMessageDialog(null, mensagem.toString());
     }
 
+    // Item I
     public static void compraMaisCara() {
 
         if (listCompras.isEmpty()) {
@@ -714,6 +762,7 @@ public class App {
         JOptionPane.showMessageDialog(null, "Informações da compra mais cara:\n" + compraMaisCara.paraString());
     }
 
+    // Item J
     public static void compraMaisBarata() {
         if (listCompras.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
