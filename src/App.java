@@ -459,7 +459,7 @@ public class App {
     public static void efetuarCompra() {
         String[] nomeProdutos = new String[(listProdutos.size() + 1)];
         if (listProdutos.isEmpty()) {
-            // TODO Murilo Adicionar mensagem informando que a lista de produto está vazia.
+            JOptionPane.showMessageDialog(null, "A lista de produtos está vázia.");
             return;
         }
 
@@ -669,7 +669,7 @@ public class App {
     }
 
     public static void compraMaisCara() {
-        
+
         if (listCompras.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
             return;
