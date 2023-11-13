@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
@@ -155,8 +158,7 @@ public class App {
                         String subEscolha = JOptionPane.showInputDialog(null, "Escolha uma opção:", "7 - Relatórios",
                                 JOptionPane.PLAIN_MESSAGE, null, subOpcoes, subOpcoes[0]).toString();
 
-                        if (subEscolha.equals(
-                                "(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
+                        if (subEscolha.equals("(a) Relação de todos os Clientes que possuem o nome iniciado por uma determinada sequência de caracteres")) {
                             buscarClientesPorNome();
                         } else if (subEscolha.equals("(b) Relação de todos os Produtos")) {
                             listarProdutos();
@@ -166,6 +168,8 @@ public class App {
                             listarCompras();
                         } else if (subEscolha.equals("(f) Busca de uma compra pelo número")) {
                             buscarCompraPorNumero();
+                        } else if (subEscolha.equals("(h) Relação das 10 últimas compras pagas")) {
+                            ultimasDezComprasPagas();
                         } else if (subEscolha.equals("(i) Apresentação das informações da compra mais cara")) {
                             compraMaisCara();
                         } else if (subEscolha.equals("(j) Apresentação das informações da compra mais barata")) {
@@ -666,6 +670,30 @@ public class App {
         } else {
             JOptionPane.showMessageDialog(null, resultado.toString());
         }
+    }
+
+    //Item H
+    public static void ultimasDezComprasPagas() {
+        List<Compra> comprasPagas = listCompras.stream()
+            .filter(compra -> compra.getTotalPago() > 0)
+            .collect(Collectors.toList());
+
+        if (comprasPagas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras pagas para exibir.");
+            return;
+        }
+
+        List<Compra> ultimasDezComprasPagas = comprasPagas.stream()
+            .sorted(Comparator.comparing(Compra::getData).reversed())
+            .limit(10)
+            .collect(Collectors.toList());
+
+        StringBuilder mensagem = new StringBuilder("Últimas 10 compras pagas:\n");
+        for (Compra compra : ultimasDezComprasPagas) {
+            mensagem.append(compra.paraString()).append("\n");
+        }
+
+        JOptionPane.showMessageDialog(null, mensagem.toString());
     }
 
     public static void compraMaisCara() {
