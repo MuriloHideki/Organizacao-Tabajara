@@ -1,0 +1,2 @@
+Produto,01,Garfo,Um talher de 4 pontas,9.99
+Produto,02,Faca,Um talher de pontiagudo e cortante,9.99

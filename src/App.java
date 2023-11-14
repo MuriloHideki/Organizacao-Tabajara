@@ -209,12 +209,16 @@ public class App {
                             CompraHandler.listarCompras(listCompras);
                         } else if (subEscolha.equals("(f) Busca de uma compra pelo número")) {
                             CompraHandler.buscarCompraPorNumero(listCompras);
+                        } else if (subEscolha.equals("(g) Relação de todas as compras que não foram pagas ainda")) {
+                            CompraHandler.buscaComprasNaoPagas(listCompras);
                         } else if (subEscolha.equals("(h) Relação das 10 últimas compras pagas")) {
                             CompraHandler.ultimasDezComprasPagas(listCompras);
                         } else if (subEscolha.equals("(i) Apresentação das informações da compra mais cara")) {
                             CompraHandler.compraMaisCara(listCompras);
                         } else if (subEscolha.equals("(j) Apresentação das informações da compra mais barata")) {
                             CompraHandler.compraMaisBarata(listCompras);
+                        } else if (subEscolha.equals("(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses")) {
+                            CompraHandler.comprasAnuaisAgrupadasPorMes(listCompras);
                         } else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
                             break;

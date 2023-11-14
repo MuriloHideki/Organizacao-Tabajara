@@ -27,22 +27,29 @@ public class CompraHandler {
         do {
             cpfCnpj = GlobalHandler.getLong("Informe o CPF ou o CNPJ", "Compra");
             for (int index = 0; index < clientes.size(); index++) {
-                if (clientes.get(index) instanceof PessoaFisica
-                        && ((PessoaFisica) clientes.get(index)).getCpf() == cpfCnpj) {
-                    encontrouCliente = true;
-                } else if (clientes.get(index) instanceof PessoaJuridica
-                        && ((PessoaJuridica) clientes.get(index)).getCnpj() == cpfCnpj) {
-                    encontrouCliente = true;
-                } else {
-                    int resposta = JOptionPane.showConfirmDialog(null,
-                            "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
-                            "Aviso", JOptionPane.YES_NO_OPTION);
+                if (clientes.get(index) instanceof PessoaFisica) {
+                    if (((PessoaFisica) clientes.get(index)).getCpf() == cpfCnpj) {
+                        encontrouCliente = true;
+                        int resposta = JOptionPane.showConfirmDialog(null,
+                                "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
+                                "Aviso", JOptionPane.YES_NO_OPTION);
 
-                    if (resposta == JOptionPane.NO_OPTION) {
-                        return;
-                    } else {
-                        encontrouCliente = false;
+                        if (resposta == JOptionPane.NO_OPTION) {
+                            return;
+                        }
                     }
+                } else if (clientes.get(index) instanceof PessoaJuridica) {
+                    if (((PessoaJuridica) clientes.get(index)).getCnpj() == cpfCnpj) {
+                        encontrouCliente = true;
+                        int resposta = JOptionPane.showConfirmDialog(null,
+                                "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
+                                "Aviso", JOptionPane.YES_NO_OPTION);
+
+                        if (resposta == JOptionPane.NO_OPTION) {
+                            return;
+                        }
+                    }
+                } else {
                 }
             }
         } while (!encontrouCliente);
@@ -225,4 +232,65 @@ public class CompraHandler {
         JOptionPane.showMessageDialog(null, "Informações da compra mais barata:\n" + compraMaisBarata.paraString());
     }
 
+    public static void buscaComprasNaoPagas(ArrayList<Compra> compras) {
+        if (compras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
+
+        ArrayList<Compra> comprasNaoPagas = new ArrayList<>();
+
+        for (Compra compra : compras) {
+            if (compra.getTotalPago() < compra.getValorTotal()) {
+                comprasNaoPagas.add(compra);
+            }
+        }
+
+        if (comprasNaoPagas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todas as compras estão pagas.");
+        } else {
+            StringBuilder comprasTexto = new StringBuilder("Compras não pagas:\n");
+            for (Compra compra : comprasNaoPagas) {
+                comprasTexto.append(compra.paraString()).append("\n");
+            }
+            JOptionPane.showMessageDialog(null, comprasTexto.toString());
+        }
+    }
+
+    public static void comprasAnuaisAgrupadasPorMes(ArrayList<Compra> compras) {
+        if (compras.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há compras cadastradas.");
+            return;
+        }
+
+        double[] valorTotalPorMes = new double[12];
+        LocalDate dataAtual = LocalDate.now();
+
+        for (Compra compra : compras) {
+            LocalDate dataCompra = compra.getData();
+
+            long diferencaMeses = java.time.temporal.ChronoUnit.MONTHS.between(dataCompra, dataAtual);
+
+            if (diferencaMeses <= 12) {
+                int indice = dataCompra.getMonthValue() - 1;
+                valorTotalPorMes[indice] += compra.getValorTotal();
+            }
+        }
+
+        boolean encontrouCompras = false;
+        StringBuilder mensagem = new StringBuilder("Valor total das compras nos últimos 12 meses por mês:\n");
+
+        for (int i = 0; i < valorTotalPorMes.length; i++) {
+            if (valorTotalPorMes[i] > 0) {
+                encontrouCompras = true;
+                mensagem.append("Mês ").append(i + 1).append(": R$ ").append(valorTotalPorMes[i]).append("\n");
+            }
+        }
+
+        if (!encontrouCompras) {
+            JOptionPane.showMessageDialog(null, "Não há compras nos últimos 12 meses.");
+        } else {
+            JOptionPane.showMessageDialog(null, mensagem.toString());
+        }
+    }
 }
