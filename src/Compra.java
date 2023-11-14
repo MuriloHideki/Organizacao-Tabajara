@@ -20,6 +20,9 @@ public class Compra {
         this.cpfCnpj = cpfCnpj;
         this.totalPago = totalPago;
         calculaValorTotal(itensCompra);
+        for (ItemCompra itemCompra : itensCompra) {
+            itemCompra.toString();
+        }
     }
 
     public ArrayList<ItemCompra> getItensCompra() {
@@ -83,8 +86,8 @@ public class Compra {
     public String paraString() {
         String itensCompra = "";
         for (ItemCompra item : this.itensCompra) {
-            itensCompra = item.getNomeProduto() + "," + item.getQuantidade() + "," + item.getPrecoUnitario() + ","
-                    + item.getValorTotal();
+            itensCompra += item.getNomeProduto() + "," + item.getQuantidade() + "," + item.getPrecoUnitario() + ","
+                    + item.getValorTotal() + ",";
         }
         return identificador + "," + data + "," + cpfCnpj + "," + totalPago + "," + itensCompra;
     }

@@ -1,1 +1,4 @@
 Pessoa Física,Tomás Ricardo Gustavo Alves,8032480,Vila Nova Curuçá,São Paulo,SP,873,Rua Tachuré,2023-11-12,22666301800,12
+Pessoa Física,Cláudio Diego Fábio Martins,79034675,Conjunto Habitacional Estrela D'Alva II,Campo Grande,MS,427,Rua Camelo,2023-11-14,6746953645,12
+Pessoa Juridica,Enrico Luan Enzo Ramos,13322124,Jardim Bandeirantes,Salto,SP,141,Rua dos Recifes,2023-11-14,9316535000140,Tomás e Lucca Publicidade e Propaganda Ltda,2025
+Pessoa Juridica,Leandro e Camila Doces & Salgados Ltda,4783155,Interlagos,São Paulo,SP,808,Praça José Gomes da Silva Neto,2023-11-14,53187541000137,Leandro e Camila Doces & Salgados Ltda,2033

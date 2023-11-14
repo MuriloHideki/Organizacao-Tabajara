@@ -41,7 +41,21 @@ public class App {
                     PessoaFisica pessoa = new PessoaFisica(nome, endereco, dataCadastro, cpf, quantidadeMaximaParcelas);
                     listClientes.add(pessoa);
                 } else {
-
+                    String nome = campos[1];
+                    long cep = Long.parseLong(campos[2]);
+                    String bairro = campos[3];
+                    String cidade = campos[4];
+                    String estado = campos[5];
+                    int numero = Integer.parseInt(campos[6]);
+                    String rua = campos[7];
+                    LocalDate dataCadastro = LocalDate.parse(campos[8]);
+                    long cnpj = Long.parseLong(campos[9]);
+                    String razaoSocial = campos[10];
+                    int prazoMaximoPagamento = Integer.parseInt(campos[11]);
+                    Endereco endereco = new Endereco(rua, numero, bairro, cep, cidade, estado);
+                    PessoaJuridica pessoa = new PessoaJuridica(nome, endereco, dataCadastro, cnpj, razaoSocial,
+                            prazoMaximoPagamento);
+                    listClientes.add(pessoa);
                 }
             }
         } catch (IOException e) {
@@ -84,8 +98,17 @@ public class App {
                 LocalDate data = LocalDate.parse(campos[1]);
                 Long cpfCnpj = Long.parseLong(campos[2]);
                 float totalPago = Float.parseFloat(campos[3]);
-                // Compra compra = new Compra(itens, identificador, data, cpfCnpj, totalPago);
-                // listCompras.add(compra);
+                ArrayList<ItemCompra> itens = new ArrayList<ItemCompra>();
+                for (int i = 4; i < campos.length; i += 4) {
+                    String nomeProduto = campos[i];
+                    int quantidade = Integer.parseInt(campos[i + 1]);
+                    float precoUnitario = Float.parseFloat(campos[i + 2]);
+
+                    ItemCompra item = new ItemCompra(quantidade, nomeProduto, precoUnitario);
+                    itens.add(item);
+                }
+                Compra compra = new Compra(itens, identificador, data, cpfCnpj, totalPago);
+                listCompras.add(compra);
             }
 
         } catch (IOException e) {
@@ -201,6 +224,12 @@ public class App {
             }
         }
 
+        escreveTodosOsArquivos(clienteBufferedWriter, produtoBufferedWriter, compraBufferedWriter);
+    }
+
+    private static void escreveTodosOsArquivos(BufferedWriter clienteBufferedWriter,
+            BufferedWriter produtoBufferedWriter,
+            BufferedWriter compraBufferedWriter) throws IOException {
         escreveClientes(clienteBufferedWriter);
 
         escreveProdutos(produtoBufferedWriter);

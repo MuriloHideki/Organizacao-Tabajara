@@ -7,6 +7,8 @@ public class PessoaJuridica extends Cliente {
 
     // Corrigindo o T O D O
      public String paraString() {
+        return "Pessoa Juridica," + super.getNome() + "," + super.getEndereco().getCep() + "," + super.getEndereco().getBairro() + "," + super.getEndereco().getCidade() + "," + super.getEndereco().getEstado() + "," + super.getEndereco().getNumero() + "," + super.getEndereco().getRua() + "," + super.getDataCadastro() + "," + getCnpj() + "," + getRazaoSocial() + "," + getPrazoMaximoPagamento();
+        /*
             return "*Pessoa Jurídica:" +
                     "\nNome Fantasia: " + super.getNome() +
                     "\nData de Cadastro: " + super.getDataCadastro() +
@@ -21,6 +23,7 @@ public class PessoaJuridica extends Cliente {
                     "\n     Bairro: " + getEndereco().getBairro() +
                     "\n     Rua: " + getEndereco().getRua() +
                     "\n     Número: " + getEndereco().getNumero();
+        */
         }
 
     public PessoaJuridica() {
