@@ -1,8 +1,8 @@
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Compra {
-    private List<ItemCompra> itensCompra;
+    private ArrayList<ItemCompra> itensCompra;
     private String identificador;
     private LocalDate data;
     private float valorTotal;
@@ -12,7 +12,7 @@ public class Compra {
     public Compra() {
     }
 
-    public Compra(List<ItemCompra> itensCompra, String identificador, LocalDate data, Long cpfCnpj,
+    public Compra(ArrayList<ItemCompra> itensCompra, String identificador, LocalDate data, Long cpfCnpj,
             float totalPago) {
         this.itensCompra = itensCompra;
         this.identificador = identificador;
@@ -22,11 +22,11 @@ public class Compra {
         calculaValorTotal(itensCompra);
     }
 
-    public List<ItemCompra> getItensCompra() {
+    public ArrayList<ItemCompra> getItensCompra() {
         return itensCompra;
     }
 
-    public void setItensCompra(List<ItemCompra> itensCompra) {
+    public void setItensCompra(ArrayList<ItemCompra> itensCompra) {
         this.itensCompra = itensCompra;
     }
 
@@ -74,7 +74,7 @@ public class Compra {
         return this.valorTotal - this.totalPago;
     }
 
-    private void calculaValorTotal(List<ItemCompra> itensCompra) {
+    private void calculaValorTotal(ArrayList<ItemCompra> itensCompra) {
         for (ItemCompra item : itensCompra) {
             this.valorTotal += item.getValorTotal();
         }

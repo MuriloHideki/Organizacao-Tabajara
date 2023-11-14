@@ -1,0 +1,2 @@
+Produto,01,Garfo,Um talher de 4 pontas perfeito para as refeições diárias,9.99
+Produto,02,Colher,Um talher de perfeito para tomar sopas,9.99
