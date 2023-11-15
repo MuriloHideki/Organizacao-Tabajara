@@ -83,7 +83,6 @@ public class App {
                     ProdutoPerecivel produto = new ProdutoPerecivel(codigo, nome, descricao, preco, validade);
                     listProdutos.add(produto);
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,35 +102,15 @@ public class App {
                     String nomeProduto = campos[i];
                     int quantidade = Integer.parseInt(campos[i + 1]);
                     float precoUnitario = Float.parseFloat(campos[i + 2]);
-
                     ItemCompra item = new ItemCompra(quantidade, nomeProduto, precoUnitario);
                     itens.add(item);
                 }
                 Compra compra = new Compra(itens, identificador, data, cpfCnpj, totalPago);
                 listCompras.add(compra);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        File clienteFile = new File("baseDados/clientes.txt");
-        if (!clienteFile.exists())
-            clienteFile.createNewFile();
-        FileWriter clienteWriter = new FileWriter(clienteFile, false);
-        BufferedWriter clienteBufferedWriter = new BufferedWriter(clienteWriter);
-
-        File produtoFile = new File("baseDados/produtos.txt");
-        if (!produtoFile.exists())
-            produtoFile.createNewFile();
-        FileWriter produtoWriter = new FileWriter(produtoFile, false);
-        BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
-
-        File compraFile = new File("baseDados/compras.txt");
-        if (!compraFile.exists())
-            compraFile.createNewFile();
-        FileWriter compraWriter = new FileWriter(compraFile, false);
-        BufferedWriter compraBufferedWriter = new BufferedWriter(compraWriter);
 
         String[] opcoes = {
                 "1 - Cadastros de Clientes",
@@ -217,7 +196,8 @@ public class App {
                             CompraHandler.compraMaisCara(listCompras);
                         } else if (subEscolha.equals("(j) Apresentação das informações da compra mais barata")) {
                             CompraHandler.compraMaisBarata(listCompras);
-                        } else if (subEscolha.equals("(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses")) {
+                        } else if (subEscolha.equals(
+                                "(k) Relação do valor total de compras feitas em cada mês nos últimos 12 meses")) {
                             CompraHandler.comprasAnuaisAgrupadasPorMes(listCompras);
                         } else if (subEscolha.equals("Voltar") || subEscolha == null) {
                             JOptionPane.showMessageDialog(null, "Voltando...");
@@ -228,20 +208,23 @@ public class App {
             }
         }
 
-        escreveTodosOsArquivos(clienteBufferedWriter, produtoBufferedWriter, compraBufferedWriter);
+        escreveTodosOsArquivos();
     }
 
-    private static void escreveTodosOsArquivos(BufferedWriter clienteBufferedWriter,
-            BufferedWriter produtoBufferedWriter,
-            BufferedWriter compraBufferedWriter) throws IOException {
-        escreveClientes(clienteBufferedWriter);
+    private static void escreveTodosOsArquivos() throws IOException {
+        escreveClientes();
 
-        escreveProdutos(produtoBufferedWriter);
+        escreveProdutos();
 
-        escreveCompras(compraBufferedWriter);
+        escreveCompras();
     }
 
-    private static void escreveProdutos(BufferedWriter produtoBufferedWriter) throws IOException {
+    private static void escreveProdutos() throws IOException {
+        File produtoFile = new File("baseDados/produtos.txt");
+        if (!produtoFile.exists())
+            produtoFile.createNewFile();
+        FileWriter produtoWriter = new FileWriter(produtoFile, true);
+        BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
         for (Produto produto : listProdutos) {
             if (produto instanceof Produto) {
                 produtoBufferedWriter.write(produto.paraString() + "\n");
@@ -253,7 +236,12 @@ public class App {
         produtoBufferedWriter.close();
     }
 
-    private static void escreveClientes(BufferedWriter clienteBufferedWriter) throws IOException {
+    private static void escreveClientes() throws IOException {
+        File clienteFile = new File("baseDados/clientes.txt");
+        if (!clienteFile.exists())
+            clienteFile.createNewFile();
+        FileWriter clienteWriter = new FileWriter(clienteFile, false);
+        BufferedWriter clienteBufferedWriter = new BufferedWriter(clienteWriter);
         for (Cliente cliente : listClientes) {
             if (cliente instanceof PessoaFisica) {
                 PessoaFisica pessoaFisica = (PessoaFisica) cliente;
@@ -266,7 +254,12 @@ public class App {
         clienteBufferedWriter.close();
     }
 
-    private static void escreveCompras(BufferedWriter compraBufferedWriter) throws IOException {
+    private static void escreveCompras() throws IOException {
+        File compraFile = new File("baseDados/compras.txt");
+        if (!compraFile.exists())
+            compraFile.createNewFile();
+        FileWriter compraWriter = new FileWriter(compraFile, false);
+        BufferedWriter compraBufferedWriter = new BufferedWriter(compraWriter);
         for (Compra compra : listCompras) {
             compraBufferedWriter.write(compra.paraString() + "\n");
         }
