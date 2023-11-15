@@ -223,7 +223,7 @@ public class App {
         File produtoFile = new File("baseDados/produtos.txt");
         if (!produtoFile.exists())
             produtoFile.createNewFile();
-        FileWriter produtoWriter = new FileWriter(produtoFile, true);
+        FileWriter produtoWriter = new FileWriter(produtoFile, false);
         BufferedWriter produtoBufferedWriter = new BufferedWriter(produtoWriter);
         for (Produto produto : listProdutos) {
             if (produto instanceof Produto) {
