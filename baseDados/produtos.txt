@@ -1,3 +1,5 @@
 Produto,01,Garfo,Um talher de 4 pontas,9.99
 Produto,02,Faca,Um talher de pontiagudo e cortante,9.99
-Produto,03,Banana,Um cacho de Banana Nanica,7.5
+Produto perecivel,03,Banana,Nanica,10.0,2023-12-10
+Produto perecivel,04,Leite,Ninho,18.0,2023-11-15
+Produto,05,Prato,Raso e liso,6.0

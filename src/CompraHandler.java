@@ -24,35 +24,34 @@ public class CompraHandler {
         int produtoIndex = 0;
         Long cpfCnpj;
         Boolean encontrouCliente = false;
+
         do {
             cpfCnpj = GlobalHandler.getLong("Informe o CPF ou o CNPJ", "Compra");
             for (int index = 0; index < clientes.size(); index++) {
                 if (clientes.get(index) instanceof PessoaFisica) {
                     if (((PessoaFisica) clientes.get(index)).getCpf() == cpfCnpj) {
                         encontrouCliente = true;
-                        int resposta = JOptionPane.showConfirmDialog(null,
-                                "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
-                                "Aviso", JOptionPane.YES_NO_OPTION);
 
-                        if (resposta == JOptionPane.NO_OPTION) {
-                            return;
-                        }
                     }
                 } else if (clientes.get(index) instanceof PessoaJuridica) {
                     if (((PessoaJuridica) clientes.get(index)).getCnpj() == cpfCnpj) {
                         encontrouCliente = true;
-                        int resposta = JOptionPane.showConfirmDialog(null,
-                                "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
-                                "Aviso", JOptionPane.YES_NO_OPTION);
 
-                        if (resposta == JOptionPane.NO_OPTION) {
-                            return;
-                        }
                     }
                 } else {
                 }
             }
+
+            if (!encontrouCliente) {
+                int resposta = JOptionPane.showConfirmDialog(null,
+                        "CPF/CNPJ não condiz com nenhum cliente cadastrado. Deseja tentar novamente?",
+                        "Aviso", JOptionPane.YES_NO_OPTION);
+                if (resposta == JOptionPane.NO_OPTION) {
+                    return;
+                }
+            }
         } while (!encontrouCliente);
+
         String identificador = GlobalHandler.getString("Identificador da compra", "Compra");
         ArrayList<ItemCompra> itens = new ArrayList<ItemCompra>();
 
@@ -99,13 +98,20 @@ public class CompraHandler {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (compraEscolhida.faltaPagar() <= 0) {
+            JOptionPane.showMessageDialog(null, "Compra paga!", "Atualização da situação de pagamento",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         JOptionPane.showMessageDialog(null,
-                "Preço atual da compra (" + identificador + "): " + compraEscolhida.getValorTotal(),
+                "Preço atual da compra (" + identificador + "): " + compraEscolhida.faltaPagar(),
                 "Atualização da situação de pagamento", JOptionPane.DEFAULT_OPTION);
-        String precoSubtraido = JOptionPane.showInputDialog(null, "Digite o preço a ser abatido",
-                "Atualização de preço", JOptionPane.QUESTION_MESSAGE);
-        float precoAbatido = Float.parseFloat(precoSubtraido);
-        float novoPreco = compraEscolhida.getValorTotal() - precoAbatido;
+
+        float totalPago = GlobalHandler.getFloat("Informe o quanto deseja pagar: ", "Atualização de Preço");
+
+       
+        float novoPreco = compraEscolhida.getValorTotal() - (totalPago + compraEscolhida.getTotalPago());
 
         if (novoPreco < 0) {
             JOptionPane.showMessageDialog(null, "O preço não pode ser maior que o valor original.",
@@ -113,15 +119,12 @@ public class CompraHandler {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        float totalPago = GlobalHandler.getFloat("Digite o novo valor total pago", "Atualização de Preço");
-        compraEscolhida.setValorTotal(novoPreco);
-        compraEscolhida.setTotalPago(totalPago);
+        compraEscolhida.setTotalPago(totalPago + compraEscolhida.getTotalPago());
 
         JOptionPane.showMessageDialog(null,
                 "Preço atualizado da compra (" + identificador + "): " + novoPreco,
                 "Atualização de Preço", JOptionPane.DEFAULT_OPTION);
-
+        compraEscolhida.setData(LocalDate.now());
     }
 
     // Item E
